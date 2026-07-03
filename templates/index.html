@@ -448,9 +448,10 @@
   #kdrama .g3{ background:linear-gradient(135deg,#521830,#06040e); } #kdrama .g4{ background:linear-gradient(135deg,#3d1a2e,#06040e); }
   #kdrama .g5{ background:linear-gradient(135deg,#522542,#06040e); } #kdrama .g6{ background:linear-gradient(135deg,#521825,#06040e); }
   /* small ranking tile with a Hangul character (stands in for a poster) */
-  .kpic{ width:60px; height:80px; border-radius:10px; flex-shrink:0; border:1px solid var(--line); display:grid; place-items:center;
+  .kpic{ position:relative; overflow:hidden; width:60px; height:80px; border-radius:10px; flex-shrink:0; border:1px solid var(--line); display:grid; place-items:center;
     font-family:'Noto Sans KR',sans-serif; font-weight:900; font-size:1.7rem; color:#fff;
     background:linear-gradient(150deg,#4a1836,#06040e); text-shadow:0 0 14px rgba(255,45,111,.75); }
+  .kpic img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 20%; }
 
   @media(prefers-reduced-motion:reduce){
     .petal,.btn:not(.ghost),.title em,.spotlight .box::after{ animation:none !important; }
@@ -684,60 +685,6 @@
     </div>
   </section>
 
-  <!-- TRENDING K-DRAMAS -->
-  <section id="kdrama">
-    <div class="wrap">
-      <div class="head center reveal">
-        <div class="eyebrow">Now Trending · Korea</div>
-        <h2 class="title">Trending <em>K-Dramas</em></h2>
-        <p class="lead">Beyond anime — the most-binged Korean dramas in the realm right now. Tap the heart to save one for tonight.</p>
-      </div>
-      <div class="grid">
-        <article class="card reveal"><div class="thumb"><div class="g g3"></div><span class="rank">#1 HOT</span><span class="fav">♥</span><span class="hangul">오</span></div>
-          <div class="body"><div class="tag">Thriller · Survival</div><h3>Squid Game</h3><p>456 desperate players risk their lives in deadly children's games for a life-changing fortune.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:99%"></i></div><span>99</span></div></div></article>
-        <article class="card reveal d1"><div class="thumb"><div class="g g2"></div><span class="rank">TOP 3</span><span class="fav">♥</span><span class="hangul">사</span></div>
-          <div class="body"><div class="tag">Romance · Drama</div><h3>Crash Landing on You</h3><p>A chaebol heiress paraglides across the border — into North Korea and a forbidden love.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:97%"></i></div><span>97</span></div></div></article>
-        <article class="card reveal d2"><div class="thumb"><div class="g g1"></div><span class="rank">TRENDING</span><span class="fav">♥</span><span class="hangul">도</span></div>
-          <div class="body"><div class="tag">Fantasy · Romance</div><h3>Goblin</h3><p>An immortal guardian searches for the one bride who can finally end his cursed eternity.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:96%"></i></div><span>96</span></div></div></article>
-        <article class="card reveal"><div class="thumb"><div class="g g4"></div><span class="rank">HOT</span><span class="fav">♥</span><span class="hangul">빈</span></div>
-          <div class="body"><div class="tag">Crime · Dark Comedy</div><h3>Vincenzo</h3><p>A mafia consigliere returns to Korea to fight corruption by his own ruthless rules.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:95%"></i></div><span>95</span></div></div></article>
-        <article class="card reveal d1"><div class="thumb"><div class="g g6"></div><span class="rank">TOP 5</span><span class="fav">♥</span><span class="hangul">글</span></div>
-          <div class="body"><div class="tag">Revenge · Thriller</div><h3>The Glory</h3><p>A woman spends years meticulously plotting vengeance against the bullies who scarred her.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:94%"></i></div><span>94</span></div></div></article>
-        <article class="card reveal d2"><div class="thumb"><div class="g g5"></div><span class="rank">NEW</span><span class="fav">♥</span><span class="hangul">선</span></div>
-          <div class="body"><div class="tag">Romance · Comedy</div><h3>Business Proposal</h3><p>A blind date goes sideways when she realizes her match is secretly her own CEO.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:92%"></i></div><span>92</span></div></div></article>
-        <article class="card reveal"><div class="thumb"><div class="g g1"></div><span class="rank">TOP 8</span><span class="fav">♥</span><span class="hangul">이</span></div>
-          <div class="body"><div class="tag">Drama · Revenge</div><h3>Itaewon Class</h3><p>An ex-convict builds a street-bar empire to take down the food conglomerate that ruined his family.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:91%"></i></div><span>91</span></div></div></article>
-        <article class="card reveal d1"><div class="thumb"><div class="g g4"></div><span class="rank">CLASSIC</span><span class="fav">♥</span><span class="hangul">응</span></div>
-          <div class="body"><div class="tag">Slice of Life · Family</div><h3>Reply 1988</h3><p>Five families in a 1988 Seoul alley share laughter, first love, and unforgettable nostalgia.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:93%"></i></div><span>93</span></div></div></article>
-        <article class="card reveal d2"><div class="thumb"><div class="g g2"></div><span class="rank">NEW</span><span class="fav">♥</span><span class="hangul">스</span></div>
-          <div class="body"><div class="tag">Horror · Thriller</div><h3>Sweet Home</h3><p>Trapped residents fight to survive as the humans around them twist into monstrous nightmares.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:92%"></i></div><span>92</span></div></div></article>
-      </div>
-    </div>
-  </section>
-
-  <!-- K-DRAMA TOP 10 (separate section) -->
-  <section id="kdrama-top10">
-    <div class="wrap">
-      <div class="head center reveal">
-        <div class="eyebrow">Ranked · Korea</div>
-        <h2 class="title">Top 10 <em>K-Dramas</em></h2>
-        <p class="lead">This week's most-watched Korean dramas, ranked by millions of fans across the realm.</p>
-      </div>
-      <div class="top10">
-        <div class="trank reveal"><div class="num">1</div><span class="kpic">오</span><div class="meta"><h4>Squid Game</h4><span class="st">★ 9.8</span> <span>· Thriller</span></div></div>
-        <div class="trank reveal d1"><div class="num">2</div><span class="kpic">사</span><div class="meta"><h4>Crash Landing on You</h4><span class="st">★ 9.7</span> <span>· Romance</span></div></div>
-        <div class="trank reveal"><div class="num">3</div><span class="kpic">도</span><div class="meta"><h4>Goblin</h4><span class="st">★ 9.7</span> <span>· Fantasy</span></div></div>
-        <div class="trank reveal d1"><div class="num">4</div><span class="kpic">응</span><div class="meta"><h4>Reply 1988</h4><span class="st">★ 9.6</span> <span>· Family</span></div></div>
-        <div class="trank reveal"><div class="num">5</div><span class="kpic">글</span><div class="meta"><h4>The Glory</h4><span class="st">★ 9.6</span> <span>· Thriller</span></div></div>
-        <div class="trank reveal d1"><div class="num">6</div><span class="kpic">빈</span><div class="meta"><h4>Vincenzo</h4><span class="st">★ 9.5</span> <span>· Crime</span></div></div>
-        <div class="trank reveal"><div class="num">7</div><span class="kpic">이</span><div class="meta"><h4>Itaewon Class</h4><span class="st">★ 9.4</span> <span>· Drama</span></div></div>
-        <div class="trank reveal d1"><div class="num">8</div><span class="kpic">선</span><div class="meta"><h4>Business Proposal</h4><span class="st">★ 9.3</span> <span>· Romance</span></div></div>
-        <div class="trank reveal"><div class="num">9</div><span class="kpic">스</span><div class="meta"><h4>Sweet Home</h4><span class="st">★ 9.3</span> <span>· Horror</span></div></div>
-        <div class="trank reveal d1"><div class="num">10</div><span class="kpic">갯</span><div class="meta"><h4>Hometown Cha-Cha-Cha</h4><span class="st">★ 9.2</span> <span>· Romance</span></div></div>
-      </div>
-    </div>
-  </section>
-
   <!-- SPOTLIGHT -->
   <section class="spotlight">
     <div class="wrap">
@@ -806,6 +753,60 @@
         <div class="ep reveal d1"><div class="thumb"><div class="g g2"></div><img class="poster" src="{{ url_for('static', filename='img/ep2.jpg') }}" alt="" onerror="this.remove()" /><span class="play">▶</span></div><div class="no">02</div><div class="info"><h4>Domain Expansion</h4><span>Season 5 · Shibuya Arc</span></div><div class="meta"><span class="star">★ 9.9</span><span>23 min</span></div></div>
         <div class="ep reveal d2"><div class="thumb"><div class="g g3"></div><img class="poster" src="{{ url_for('static', filename='img/ep3.jpg') }}" alt="" onerror="this.remove()" /><span class="play">▶</span></div><div class="no">03</div><div class="info"><h4>Breath of the Final Form</h4><span>Season 5 · Infinity Castle</span></div><div class="meta"><span class="star">★ 9.8</span><span>25 min</span></div></div>
         <div class="ep reveal d3"><div class="thumb"><div class="g g6"></div><img class="poster" src="{{ url_for('static', filename='img/ep4.jpg') }}" alt="" onerror="this.remove()" /><span class="play">▶</span></div><div class="no">04</div><div class="info"><h4>The Last Stand</h4><span>Season 5 · Marley War</span></div><div class="meta"><span class="star">★ 9.6</span><span>26 min</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRENDING K-DRAMAS -->
+  <section id="kdrama">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Now Trending · Korea</div>
+        <h2 class="title">Trending <em>K-Dramas</em></h2>
+        <p class="lead">Beyond anime — the most-binged Korean dramas in the realm right now. Tap the heart to save one for tonight.</p>
+      </div>
+      <div class="grid">
+        <article class="card reveal"><div class="thumb"><div class="g g3"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama1.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">#1 HOT</span><span class="fav">♥</span><span class="hangul">오</span></div>
+          <div class="body"><div class="tag">Thriller · Survival</div><h3>Squid Game</h3><p>456 desperate players risk their lives in deadly children's games for a life-changing fortune.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:99%"></i></div><span>99</span></div></div></article>
+        <article class="card reveal d1"><div class="thumb"><div class="g g2"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama2.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">TOP 3</span><span class="fav">♥</span><span class="hangul">사</span></div>
+          <div class="body"><div class="tag">Romance · Drama</div><h3>Crash Landing on You</h3><p>A chaebol heiress paraglides across the border — into North Korea and a forbidden love.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:97%"></i></div><span>97</span></div></div></article>
+        <article class="card reveal d2"><div class="thumb"><div class="g g1"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama3.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">TRENDING</span><span class="fav">♥</span><span class="hangul">도</span></div>
+          <div class="body"><div class="tag">Fantasy · Romance</div><h3>Goblin</h3><p>An immortal guardian searches for the one bride who can finally end his cursed eternity.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:96%"></i></div><span>96</span></div></div></article>
+        <article class="card reveal"><div class="thumb"><div class="g g4"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama4.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">HOT</span><span class="fav">♥</span><span class="hangul">빈</span></div>
+          <div class="body"><div class="tag">Crime · Dark Comedy</div><h3>Vincenzo</h3><p>A mafia consigliere returns to Korea to fight corruption by his own ruthless rules.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:95%"></i></div><span>95</span></div></div></article>
+        <article class="card reveal d1"><div class="thumb"><div class="g g6"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama5.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">TOP 5</span><span class="fav">♥</span><span class="hangul">글</span></div>
+          <div class="body"><div class="tag">Revenge · Thriller</div><h3>The Glory</h3><p>A woman spends years meticulously plotting vengeance against the bullies who scarred her.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:94%"></i></div><span>94</span></div></div></article>
+        <article class="card reveal d2"><div class="thumb"><div class="g g5"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama6.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">NEW</span><span class="fav">♥</span><span class="hangul">선</span></div>
+          <div class="body"><div class="tag">Romance · Comedy</div><h3>Business Proposal</h3><p>A blind date goes sideways when she realizes her match is secretly her own CEO.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:92%"></i></div><span>92</span></div></div></article>
+        <article class="card reveal"><div class="thumb"><div class="g g1"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama7.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">TOP 8</span><span class="fav">♥</span><span class="hangul">이</span></div>
+          <div class="body"><div class="tag">Drama · Revenge</div><h3>Itaewon Class</h3><p>An ex-convict builds a street-bar empire to take down the food conglomerate that ruined his family.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:91%"></i></div><span>91</span></div></div></article>
+        <article class="card reveal d1"><div class="thumb"><div class="g g4"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama8.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">CLASSIC</span><span class="fav">♥</span><span class="hangul">응</span></div>
+          <div class="body"><div class="tag">Slice of Life · Family</div><h3>Reply 1988</h3><p>Five families in a 1988 Seoul alley share laughter, first love, and unforgettable nostalgia.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:93%"></i></div><span>93</span></div></div></article>
+        <article class="card reveal d2"><div class="thumb"><div class="g g2"></div><img class="poster" src="{{ url_for('static', filename='img/kdrama9.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">NEW</span><span class="fav">♥</span><span class="hangul">스</span></div>
+          <div class="body"><div class="tag">Horror · Thriller</div><h3>Sweet Home</h3><p>Trapped residents fight to survive as the humans around them twist into monstrous nightmares.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:92%"></i></div><span>92</span></div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- K-DRAMA TOP 10 (separate section) -->
+  <section id="kdrama-top10">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Ranked · Korea</div>
+        <h2 class="title">Top 10 <em>K-Dramas</em></h2>
+        <p class="lead">This week's most-watched Korean dramas, ranked by millions of fans across the realm.</p>
+      </div>
+      <div class="top10">
+        <div class="trank reveal"><div class="num">1</div><span class="kpic">오<img src="{{ url_for('static', filename='img/kdrama1.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>Squid Game</h4><span class="st">★ 9.8</span> <span>· Thriller</span></div></div>
+        <div class="trank reveal d1"><div class="num">2</div><span class="kpic">사<img src="{{ url_for('static', filename='img/kdrama2.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>Crash Landing on You</h4><span class="st">★ 9.7</span> <span>· Romance</span></div></div>
+        <div class="trank reveal"><div class="num">3</div><span class="kpic">도<img src="{{ url_for('static', filename='img/kdrama3.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>Goblin</h4><span class="st">★ 9.7</span> <span>· Fantasy</span></div></div>
+        <div class="trank reveal d1"><div class="num">4</div><span class="kpic">응<img src="{{ url_for('static', filename='img/kdrama8.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>Reply 1988</h4><span class="st">★ 9.6</span> <span>· Family</span></div></div>
+        <div class="trank reveal"><div class="num">5</div><span class="kpic">글<img src="{{ url_for('static', filename='img/kdrama5.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>The Glory</h4><span class="st">★ 9.6</span> <span>· Thriller</span></div></div>
+        <div class="trank reveal d1"><div class="num">6</div><span class="kpic">빈<img src="{{ url_for('static', filename='img/kdrama4.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>Vincenzo</h4><span class="st">★ 9.5</span> <span>· Crime</span></div></div>
+        <div class="trank reveal"><div class="num">7</div><span class="kpic">이<img src="{{ url_for('static', filename='img/kdrama7.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>Itaewon Class</h4><span class="st">★ 9.4</span> <span>· Drama</span></div></div>
+        <div class="trank reveal d1"><div class="num">8</div><span class="kpic">선<img src="{{ url_for('static', filename='img/kdrama6.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>Business Proposal</h4><span class="st">★ 9.3</span> <span>· Romance</span></div></div>
+        <div class="trank reveal"><div class="num">9</div><span class="kpic">스<img src="{{ url_for('static', filename='img/kdrama9.jpg') }}" alt="" onerror="this.remove()" /></span><div class="meta"><h4>Sweet Home</h4><span class="st">★ 9.3</span> <span>· Horror</span></div></div>
+        <div class="trank reveal d1"><div class="num">10</div><span class="kpic">갯</span><div class="meta"><h4>Hometown Cha-Cha-Cha</h4><span class="st">★ 9.2</span> <span>· Romance</span></div></div>
       </div>
     </div>
   </section>
@@ -1032,7 +1033,7 @@
 
   // ===== 🎬 cinematic hover previews on character cards =====
   (function(){
-    const cards = document.querySelectorAll('#chars .card');
+    const cards = document.querySelectorAll('#chars .card, #kdrama .card');
     if(!cards.length) return;
     cards.forEach(card => {
       const thumb = card.querySelector('.thumb');
