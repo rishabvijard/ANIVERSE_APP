@@ -1,0 +1,871 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ANIVERSE — Enter the Anime Realm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  /* ============ RESET & TOKENS ============ */
+  *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --bg:#06040e;
+    --bg-soft:#0a0716;
+    --card:#0e0a1e;
+    --card2:#140f28;
+    --line:rgba(255,255,255,.09);
+    --txt:#eef1fb;
+    --muted:#9a93b8;
+    --aura:#ecdcff;
+    --acc:#9b5cff;     /* main purple (was orange) */
+    --acc2:#c9a8ff;    /* light purple (was light orange) */
+    --acc3:#d24dff;    /* magenta-purple (was crimson) */
+    --neon:#5ad2ff;    /* blue accent kept */
+    --neon2:#a06bff;
+    --glow:0 0 50px rgba(155,92,255,.45);
+    --radius:20px;
+    --font:'Inter',system-ui,-apple-system,sans-serif;
+    --display:'Bebas Neue',sans-serif;
+    --jp:'Noto Sans JP',sans-serif;
+  }
+  html{ scroll-behavior:smooth; }
+  body{ font-family:var(--font); background:var(--bg); color:var(--txt); line-height:1.65; overflow-x:hidden; }
+  a{ color:inherit; text-decoration:none; }
+  img{ display:block; max-width:100%; }
+  ::selection{ background:var(--acc); color:#fff; }
+  ::-webkit-scrollbar{ width:11px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:linear-gradient(var(--acc),var(--neon)); border-radius:50px; border:3px solid var(--bg); }
+
+  body::before{
+    content:""; position:fixed; inset:-30%;
+    background:
+      radial-gradient(38% 38% at 50% 30%, rgba(155,92,255,.14), transparent 60%),
+      radial-gradient(45% 45% at 15% 80%, rgba(210,77,255,.12), transparent 60%),
+      radial-gradient(45% 45% at 88% 65%, rgba(90,210,255,.10), transparent 60%);
+    z-index:-2; animation:drift 22s ease-in-out infinite alternate;
+  }
+  @keyframes drift{ 0%{ transform:translate(0,0) scale(1); } 100%{ transform:translate(3%,-3%) scale(1.12); } }
+  body::after{
+    content:""; position:fixed; inset:0; z-index:-1;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:70px 70px;
+    mask-image:radial-gradient(ellipse 75% 55% at 50% 0%,#000,transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse 75% 55% at 50% 0%,#000,transparent 75%);
+    opacity:.4;
+  }
+  .wrap{ width:min(1220px,92%); margin-inline:auto; }
+
+  /* ============ NAV ============ */
+  header{ position:fixed; top:0; left:0; right:0; z-index:50; backdrop-filter:blur(14px); background:rgba(6,4,14,.5); border-bottom:1px solid transparent; transition:.35s; }
+  header.scrolled{ border-bottom-color:var(--line); background:rgba(6,4,14,.9); }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 0; position:relative; }
+  .logo{ font-family:var(--display); font-size:1.9rem; letter-spacing:3px; line-height:1; }
+  .logo span{ color:var(--acc); text-shadow:0 0 22px var(--acc); }
+  .brand-logo{ display:flex; flex-direction:column; align-items:flex-start; gap:3px; }
+  .logo-sword{ width:134px; height:auto; filter:drop-shadow(0 0 6px rgba(255,106,0,.45)); animation:swordGlow 3s ease-in-out infinite; }
+  .links{ display:flex; gap:30px; }
+  .links a{ color:var(--muted); font-size:.95rem; font-weight:500; position:relative; transition:.25s; }
+  .links a::after{ content:""; position:absolute; left:0; bottom:-7px; height:2px; width:0; background:linear-gradient(90deg,var(--neon),var(--acc)); transition:.3s; }
+  .links a:hover{ color:var(--txt); }
+  .links a:hover::after{ width:100%; }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:12px 28px; border-radius:50px; font-family:var(--font); font-weight:700; font-size:.92rem; cursor:pointer; border:0; letter-spacing:.3px; background:linear-gradient(90deg,var(--acc),var(--acc3)); color:#fff; box-shadow:0 8px 30px rgba(155,92,255,.4); transition:.3s; }
+  .btn:hover{ transform:translateY(-3px); box-shadow:0 12px 40px rgba(210,77,255,.55); }
+  .btn.ghost{ background:rgba(255,255,255,.04); color:var(--txt); border:1px solid var(--line); box-shadow:none; }
+  .btn.ghost:hover{ border-color:var(--acc); color:var(--acc2); box-shadow:0 0 24px rgba(155,92,255,.3); }
+  .burger{ display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; }
+  .burger span{ width:26px; height:2px; background:var(--txt); transition:.3s; }
+
+  /* ============ HERO ============ */
+  .hero{ min-height:100vh; display:flex; align-items:center; padding:90px 0 70px; position:relative; text-align:center; overflow:hidden; background:radial-gradient(60% 60% at 50% 40%,#120e1f,#06040e 70%); perspective:1000px; }
+  .hero-media{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 28%; z-index:0; opacity:.9; animation:heroZoom 20s ease-in-out infinite alternate; }
+  @keyframes heroZoom{ to{ transform:scale(1.08); } }
+  .hero-overlay{ position:absolute; inset:0; z-index:1; background:radial-gradient(72% 58% at 50% 42%, transparent, rgba(6,4,14,.5) 78%), linear-gradient(to bottom, rgba(6,4,14,.6) 0%, rgba(6,4,14,.15) 32%, rgba(6,4,14,.96) 100%); }
+  .embers{ position:absolute; inset:0; z-index:1; pointer-events:none; }
+  .ember{ position:absolute; bottom:-10px; width:4px; height:4px; border-radius:50%; background:radial-gradient(circle,var(--acc2),var(--acc)); box-shadow:0 0 12px var(--acc); opacity:0; animation:rise linear infinite; }
+  @keyframes rise{ 0%{ transform:translateY(0) scale(1); opacity:0; } 10%{ opacity:1; } 90%{ opacity:.8; } 100%{ transform:translateY(-100vh) scale(.3); opacity:0; } }
+  .hero .wrap{ display:flex; flex-direction:column; align-items:center; position:relative; z-index:2; transform-style:preserve-3d; }
+  .badge{ display:inline-flex; align-items:center; gap:9px; padding:8px 18px; border:1px solid var(--line); border-radius:50px; font-size:.82rem; color:#d6d2e8; margin-bottom:30px; background:rgba(255,255,255,.03); backdrop-filter:blur(6px); }
+  .badge .dot{ width:8px; height:8px; border-radius:50%; background:var(--acc); box-shadow:0 0 12px var(--acc); animation:pulse 1.6s infinite; }
+  @keyframes pulse{ 50%{ opacity:.35; } }
+  .hero h1{ font-family:var(--display); font-size:clamp(3.4rem,11vw,8.5rem); line-height:.9; font-weight:400; letter-spacing:2px; margin-bottom:24px; text-transform:uppercase; transform:translateZ(60px); }
+  .hero h1 .grad{ background:linear-gradient(90deg,var(--acc2),var(--acc) 45%,var(--acc3)); -webkit-background-clip:text; background-clip:text; color:transparent; background-size:200% auto; animation:shine 6s linear infinite; text-shadow:0 0 80px rgba(155,92,255,.35); }
+  @keyframes shine{ to{ background-position:200% center; } }
+  .hero p{ color:#cbc7dd; font-size:1.18rem; max-width:620px; margin-bottom:40px; font-weight:300; transform:translateZ(30px); }
+  .hero .cta{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; transform:translateZ(40px); }
+  .scrolldown{ position:absolute; bottom:28px; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--muted); font-size:.72rem; letter-spacing:2px; text-transform:uppercase; }
+  .mouse{ width:24px; height:38px; border:2px solid var(--muted); border-radius:14px; position:relative; }
+  .mouse::after{ content:""; position:absolute; top:7px; left:50%; transform:translateX(-50%); width:4px; height:7px; border-radius:3px; background:var(--neon); animation:scroll 1.6s infinite; }
+  @keyframes scroll{ 0%{ opacity:0; transform:translate(-50%,0); } 40%{ opacity:1; } 80%{ opacity:0; transform:translate(-50%,12px); } }
+
+  /* ============ MARQUEE ============ */
+  .marquee{ border-block:1px solid var(--line); padding:18px 0; overflow:hidden; background:rgba(255,255,255,.015); }
+  .marquee .track{ display:flex; gap:60px; width:max-content; animation:scrollx 26s linear infinite; }
+  .marquee span{ font-family:var(--display); font-size:1.5rem; letter-spacing:3px; color:var(--muted); display:inline-flex; align-items:center; gap:60px; }
+  .marquee span::after{ content:"✦"; color:var(--acc); font-size:1rem; }
+  @keyframes scrollx{ to{ transform:translateX(-50%); } }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:120px 0; position:relative; }
+  .eyebrow{ display:inline-block; color:var(--acc2); font-weight:700; letter-spacing:4px; font-size:.78rem; text-transform:uppercase; margin-bottom:14px; }
+  .title{ font-family:var(--display); font-size:clamp(2.4rem,5.5vw,4rem); font-weight:400; letter-spacing:1.5px; line-height:1; margin-bottom:18px; text-transform:uppercase; }
+  .title em{ font-style:normal; color:var(--acc); }
+  .lead{ color:var(--muted); max-width:600px; font-weight:300; font-size:1.05rem; }
+  .head{ margin-bottom:60px; }
+  .center{ text-align:center; } .center .lead{ margin-inline:auto; }
+
+  /* ============ STATS ============ */
+  .statstrip{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+  .stat{ text-align:center; padding:34px 18px; border:1px solid var(--line); border-radius:var(--radius); background:linear-gradient(160deg,var(--card),var(--bg-soft)); transition:.35s; }
+  .stat:hover{ border-color:rgba(155,92,255,.45); transform:translateY(-6px); }
+  .stat .n{ font-family:var(--display); font-size:3rem; line-height:1; background:linear-gradient(90deg,var(--neon),var(--acc)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .stat .l{ font-size:.85rem; color:var(--muted); letter-spacing:1px; margin-top:8px; }
+
+  /* ============ POWER / ABOUT ============ */
+  .about-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:54px; align-items:center; }
+  .about-card{ background:linear-gradient(160deg,var(--card),var(--bg-soft)); border:1px solid var(--line); border-radius:var(--radius); padding:40px; position:relative; overflow:hidden; }
+  .about-card::before{ content:""; position:absolute; top:-50%; right:-30%; width:320px; height:320px; background:radial-gradient(circle,rgba(155,92,255,.16),transparent 70%); }
+  .skill{ margin-bottom:24px; position:relative; }
+  .skill:last-child{ margin-bottom:0; }
+  .skill .row{ display:flex; justify-content:space-between; font-size:.92rem; font-weight:500; margin-bottom:9px; }
+  .bar{ height:8px; background:rgba(255,255,255,.06); border-radius:50px; overflow:hidden; }
+  .bar i{ display:block; height:100%; border-radius:50px; background:linear-gradient(90deg,var(--acc),var(--acc3)); width:0; transition:width 1.5s cubic-bezier(.2,.8,.2,1); box-shadow:0 0 14px rgba(155,92,255,.5); }
+  .reveal.in .bar i{ width:var(--w); }
+  /* ============ ANIME SLIDER (Power) ============ */
+  .aslider{ margin-top:70px; position:relative; border:1px solid var(--line); border-radius:24px; overflow:hidden; background:linear-gradient(160deg,var(--card),var(--bg-soft)); }
+  .aslide-track{ display:flex; transition:transform .6s cubic-bezier(.2,.8,.2,1); }
+  .aslide{ min-width:100%; display:grid; grid-template-columns:42% 58%; align-items:stretch; }
+  .aslide-img{ position:relative; min-height:390px; }
+  .aslide-img img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 20%; }
+  .aslide-img::after{ content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent 48%,var(--card)); }
+  .aslide-info{ padding:50px; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; }
+  .aslide-info .tag{ color:var(--neon); font-size:.75rem; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+  .aslide-info h3{ font-family:var(--display); font-size:clamp(2.2rem,4.5vw,3.4rem); letter-spacing:1px; line-height:1; margin-bottom:14px; }
+  .rate{ color:var(--acc2); letter-spacing:2px; margin-bottom:16px; font-size:.95rem; }
+  .rate b{ color:#fff; font-size:1.1rem; margin-left:6px; } .rate small{ color:var(--muted); }
+  .aslide-info p{ color:#cbc7dd; font-weight:300; margin-bottom:20px; max-width:470px; }
+  .metarow{ display:flex; gap:20px; flex-wrap:wrap; margin-bottom:26px; color:var(--muted); font-size:.86rem; }
+  .aslide-info .btn{ align-self:flex-start; }
+  .aslide-nav{ position:absolute; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:rgba(6,4,14,.65); color:#fff; font-size:1.5rem; cursor:pointer; z-index:3; backdrop-filter:blur(6px); transition:.3s; display:grid; place-items:center; }
+  .aslide-nav:hover{ background:var(--acc); border-color:var(--acc); }
+  .aslide-nav.prev{ left:18px; } .aslide-nav.next{ right:18px; }
+  .adots{ position:absolute; bottom:20px; right:30px; display:flex; gap:8px; z-index:3; }
+  .adot{ width:9px; height:9px; border-radius:50px; border:0; background:rgba(255,255,255,.28); cursor:pointer; transition:.3s; padding:0; }
+  .adot.active{ background:var(--acc); width:26px; }
+  @media(max-width:760px){
+    .aslide{ grid-template-columns:1fr; }
+    .aslide-img{ min-height:210px; }
+    .aslide-img::after{ background:linear-gradient(to bottom,transparent 45%,var(--card)); }
+    .aslide-info{ padding:30px; }
+    .adots{ right:50%; transform:translateX(50%); }
+  }
+
+  /* ============ CHARACTERS (3D) ============ */
+  .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; cursor:pointer; position:relative; transform-style:preserve-3d; transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)); transition:transform .25s ease, box-shadow .4s, border-color .4s; will-change:transform; }
+  .card:hover{ border-color:rgba(90,210,255,.5); box-shadow:0 30px 70px rgba(0,0,0,.65), 0 0 40px rgba(155,92,255,.2); }
+  .card .thumb{ height:240px; position:relative; overflow:hidden; display:grid; place-items:center; transform-style:preserve-3d; }
+  .card .thumb .g{ position:absolute; inset:0; transition:.6s; }
+  .card .thumb .poster{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 22%; z-index:1; transition:.6s; }
+  .card:hover .thumb .poster{ transform:scale(1.1); }
+  .card .thumb::after{ content:""; position:absolute; inset:0; z-index:2; background:linear-gradient(to top,var(--card),transparent 55%); }
+  .card .kanji{ position:relative; z-index:3; font-family:var(--jp); font-size:5rem; font-weight:900; color:rgba(255,255,255,.95); text-shadow:0 0 36px rgba(155,92,255,.6); transform:translateZ(45px); }
+  .card .rank{ position:absolute; top:16px; left:16px; z-index:4; font-family:var(--display); font-size:.9rem; letter-spacing:1px; padding:5px 12px; border-radius:50px; background:rgba(6,4,14,.7); border:1px solid var(--line); backdrop-filter:blur(6px); transform:translateZ(35px); }
+  .card .fav{ position:absolute; top:16px; right:16px; z-index:4; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; background:rgba(6,4,14,.6); border:1px solid var(--line); backdrop-filter:blur(6px); transition:.3s; transform:translateZ(35px); font-size:1rem; }
+  .card .fav.saved,.card:hover .fav{ color:var(--acc3); border-color:var(--acc3); }
+  .card .fav.saved{ background:rgba(210,77,255,.2); }
+  .g1{ background:linear-gradient(135deg,#2a1a52,#06040e); } .g2{ background:linear-gradient(135deg,#3d2160,#06040e); }
+  .g3{ background:linear-gradient(135deg,#4a1852,#06040e); } .g4{ background:linear-gradient(135deg,#1a2a52,#06040e); }
+  .g5{ background:linear-gradient(135deg,#2a2d52,#06040e); } .g6{ background:linear-gradient(135deg,#3a1852,#06040e); }
+  .card .body{ padding:24px; transform:translateZ(20px); }
+  .card .tag{ font-size:.72rem; color:var(--neon); letter-spacing:2px; text-transform:uppercase; font-weight:600; }
+  .card h3{ margin:8px 0 8px; font-size:1.35rem; font-weight:700; }
+  .card p{ color:var(--muted); font-size:.9rem; margin-bottom:16px; font-weight:300; }
+  .powerbar{ display:flex; align-items:center; gap:10px; font-size:.75rem; color:var(--muted); letter-spacing:1px; }
+  .powerbar .pb{ flex:1; height:6px; background:rgba(255,255,255,.06); border-radius:50px; overflow:hidden; }
+  .powerbar .pb i{ display:block; height:100%; background:linear-gradient(90deg,var(--neon),var(--acc3)); border-radius:50px; }
+
+  /* ============ SPOTLIGHT (3D) ============ */
+  .spotlight{ perspective:1200px; }
+  .spotlight .box{ position:relative; border-radius:28px; overflow:hidden; border:1px solid var(--line); min-height:420px; display:flex; align-items:center; padding:60px; transform-style:preserve-3d; transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)); transition:transform .3s ease; }
+  .spotlight .bg{ position:absolute; inset:0; background:linear-gradient(120deg,#1c0e2a,#06040e 60%); z-index:0; }
+  .spotlight .bg .poster{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .spotlight .bg::before{ content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg,rgba(6,4,14,.95) 0%,rgba(6,4,14,.7) 45%,rgba(6,4,14,.4) 100%); }
+  .spotlight .bg::after{ content:"炎"; position:absolute; right:-2%; top:50%; transform:translateY(-50%); font-family:var(--jp); font-weight:900; font-size:26rem; color:rgba(155,92,255,.10); line-height:1; z-index:1; }
+  .spotlight .content{ position:relative; z-index:2; max-width:560px; transform:translateZ(50px); }
+  .spotlight .pill{ display:inline-flex; align-items:center; gap:8px; padding:7px 16px; border-radius:50px; background:rgba(210,77,255,.15); border:1px solid rgba(210,77,255,.3); color:#e0a6ff; font-size:.78rem; font-weight:600; letter-spacing:1px; margin-bottom:18px; }
+  .spotlight h2{ font-family:var(--display); font-size:clamp(2.6rem,6vw,5rem); line-height:.92; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:16px; }
+  .spotlight p{ color:#d3cee4; font-weight:300; margin-bottom:18px; }
+  .spotlight .info{ display:flex; gap:24px; margin-bottom:28px; flex-wrap:wrap; font-size:.88rem; color:var(--muted); }
+  .spotlight .info b{ color:var(--acc2); font-weight:600; }
+
+  /* ============ TOP 10 ============ */
+  .top10{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px 40px; }
+  .trank{ display:flex; align-items:center; gap:20px; padding:14px; border-radius:16px; border:1px solid transparent; transition:.35s; cursor:pointer; }
+  .trank:hover{ border-color:var(--line); background:var(--card); transform:translateX(6px); }
+  .trank .num{ font-family:var(--display); font-size:3.4rem; line-height:1; width:64px; text-align:center; flex-shrink:0; background:linear-gradient(180deg,var(--acc2),var(--acc)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .trank .pic{ width:60px; height:80px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--line); }
+  .trank .meta h4{ font-size:1.08rem; font-weight:600; }
+  .trank .meta span{ color:var(--muted); font-size:.84rem; }
+  .trank .meta .st{ color:var(--acc2); }
+
+  /* ============ GENRES ============ */
+  .genres{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+  .genre{ padding:13px 26px; border:1px solid var(--line); border-radius:50px; font-weight:500; color:#cbc7dd; transition:.3s; cursor:pointer; background:rgba(255,255,255,.02); }
+  .genre:hover{ border-color:var(--acc); color:#fff; background:linear-gradient(90deg,rgba(155,92,255,.18),rgba(210,77,255,.18)); transform:translateY(-3px); }
+
+  /* ============ EPISODES ============ */
+  .eps{ display:grid; gap:16px; }
+  .ep{ display:flex; align-items:center; gap:26px; padding:22px 28px; background:var(--card); border:1px solid var(--line); border-radius:16px; transition:.35s; cursor:pointer; }
+  .ep:hover{ border-color:rgba(90,210,255,.4); transform:translateX(8px); background:var(--card2); }
+  .ep .thumb{ width:120px; height:68px; border-radius:10px; flex-shrink:0; position:relative; overflow:hidden; display:grid; place-items:center; }
+  .ep .thumb .poster{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+  .ep .thumb .play{ position:relative; z-index:1; width:30px; height:30px; border-radius:50%; background:rgba(6,4,14,.55); display:grid; place-items:center; font-size:.7rem; color:#fff; backdrop-filter:blur(4px); transition:.3s; }
+  .ep:hover .thumb .play{ background:var(--acc); transform:scale(1.12); }
+  .ep .no{ font-family:var(--display); font-size:1.8rem; color:var(--acc); min-width:48px; }
+  .ep .info{ flex:1; } .ep .info h4{ font-size:1.1rem; font-weight:600; } .ep .info span{ color:var(--muted); font-size:.85rem; }
+  .ep .meta{ display:flex; align-items:center; gap:16px; color:var(--muted); font-size:.85rem; white-space:nowrap; }
+  .ep .star{ color:var(--acc2); }
+
+  /* ============ PRICING ============ */
+  .plans{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; align-items:stretch; }
+  .plan{ background:linear-gradient(160deg,var(--card),var(--bg-soft)); border:1px solid var(--line); border-radius:24px; padding:40px 32px; position:relative; transition:.35s; }
+  .plan:hover{ transform:translateY(-8px); border-color:rgba(155,92,255,.4); }
+  .plan.pop{ border-color:var(--acc); box-shadow:0 0 50px rgba(155,92,255,.2); }
+  .plan.pop::before{ content:"MOST POPULAR"; position:absolute; top:-12px; left:50%; transform:translateX(-50%); font-size:.7rem; font-weight:700; letter-spacing:1.5px; padding:6px 16px; border-radius:50px; background:linear-gradient(90deg,var(--acc),var(--acc3)); color:#fff; }
+  .plan h3{ font-family:var(--display); font-size:1.7rem; letter-spacing:1px; margin-bottom:6px; }
+  .plan .price{ font-size:2.8rem; font-weight:800; margin:10px 0; }
+  .plan .price span{ font-size:1rem; font-weight:400; color:var(--muted); }
+  .plan ul{ list-style:none; margin:24px 0 28px; }
+  .plan li{ padding:9px 0; color:#cbc7dd; font-weight:300; font-size:.94rem; border-bottom:1px solid rgba(255,255,255,.05); display:flex; gap:10px; }
+  .plan li::before{ content:"✦"; color:var(--acc2); }
+  .plan .btn{ width:100%; justify-content:center; }
+
+  /* ============ REVIEWS ============ */
+  .reviews{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+  .review{ background:linear-gradient(160deg,var(--card),var(--bg-soft)); border:1px solid var(--line); border-radius:var(--radius); padding:32px; transition:.35s; }
+  .review:hover{ border-color:rgba(160,107,255,.4); transform:translateY(-6px); }
+  .review .stars{ color:var(--acc2); letter-spacing:2px; margin-bottom:16px; }
+  .review p{ font-weight:300; color:#d8d4e6; margin-bottom:22px; font-size:.98rem; }
+  .review .who{ display:flex; align-items:center; gap:14px; }
+  .review .av{ width:46px; height:46px; border-radius:50%; display:grid; place-items:center; font-weight:700; color:#fff; font-family:var(--display); font-size:1.3rem; letter-spacing:1px; }
+  .review .who h5{ font-size:.95rem; font-weight:600; } .review .who span{ color:var(--muted); font-size:.8rem; }
+
+  /* ============ FAQ ============ */
+  .faq{ max-width:760px; margin:0 auto; display:grid; gap:14px; }
+  .faq-item{ border:1px solid var(--line); border-radius:14px; background:var(--card); overflow:hidden; transition:.3s; }
+  .faq-item.open{ border-color:rgba(155,92,255,.4); }
+  .faq-q{ width:100%; text-align:left; background:none; border:0; color:var(--txt); font-family:var(--font); font-size:1.05rem; font-weight:600; padding:22px 26px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+  .faq-q span{ font-size:1.5rem; color:var(--acc); transition:.3s; flex-shrink:0; }
+  .faq-item.open .faq-q span{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .4s ease; }
+  .faq-a p{ padding:0 26px 22px; color:var(--muted); font-weight:300; }
+
+  /* ============ CTA ============ */
+  .contact{ text-align:center; }
+  .contact .box{ background:linear-gradient(160deg,var(--card),var(--bg-soft)); border:1px solid var(--line); border-radius:30px; padding:80px 40px; position:relative; overflow:hidden; }
+  .contact .box::before{ content:""; position:absolute; inset:0; background:radial-gradient(60% 80% at 50% 0%,rgba(155,92,255,.16),transparent 70%); }
+  .contact h2{ font-family:var(--display); font-size:clamp(2.4rem,6vw,4.4rem); font-weight:400; letter-spacing:1.5px; margin-bottom:18px; position:relative; text-transform:uppercase; line-height:.95; }
+  .contact p{ color:var(--muted); margin-bottom:34px; position:relative; font-weight:300; max-width:520px; margin-inline:auto; }
+  .form{ position:relative; display:flex; gap:12px; max-width:480px; margin:0 auto; flex-wrap:wrap; }
+  .form input{ flex:1; min-width:220px; padding:15px 22px; border-radius:50px; border:1px solid var(--line); background:rgba(255,255,255,.04); color:var(--txt); font-family:var(--font); font-size:.95rem; outline:none; transition:.3s; }
+  .form input:focus{ border-color:var(--acc); box-shadow:0 0 0 4px rgba(155,92,255,.15); }
+
+  /* ============ FOOTER ============ */
+  footer{ border-top:1px solid var(--line); padding:70px 0 36px; }
+  .fcols{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:50px; }
+  .fcols h6{ font-size:.8rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+  .fcols a{ display:block; color:#cbc7dd; font-size:.92rem; margin-bottom:12px; transition:.25s; font-weight:300; }
+  .fcols a:hover{ color:var(--acc2); transform:translateX(4px); }
+  .fcols .brand .logo{ margin-bottom:16px; }
+  .fcols .brand p{ color:var(--muted); font-weight:300; font-size:.92rem; max-width:280px; }
+  .foot{ display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; color:var(--muted); font-size:.88rem; padding-top:30px; border-top:1px solid var(--line); }
+  .socials{ display:flex; gap:12px; }
+  .socials a{ width:42px; height:42px; border-radius:50%; border:1px solid var(--line); display:grid; place-items:center; transition:.3s; font-size:.82rem; font-weight:600; }
+  .socials a:hover{ border-color:var(--acc); color:var(--acc2); transform:translateY(-3px); background:rgba(155,92,255,.08); }
+
+  /* ============ REVEAL ============ */
+  .reveal{ opacity:0; transform:translateY(44px); transition:.8s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in{ opacity:1; transform:none; }
+  .reveal.d1{ transition-delay:.08s; } .reveal.d2{ transition-delay:.16s; } .reveal.d3{ transition-delay:.24s; } .reveal.d4{ transition-delay:.32s; }
+
+  /* ============ LOADER / PROGRESS / CURSOR / MODAL / TOP ============ */
+  #loader{ position:fixed; inset:0; z-index:200; background:var(--bg); display:grid; place-items:center; transition:opacity .7s ease, visibility .7s; }
+  #loader.done{ opacity:0; visibility:hidden; }
+  .loader-kanji{ font-family:var(--jp); font-size:5rem; font-weight:900; color:#fff; text-shadow:0 0 50px var(--acc); animation:loadpulse 1.4s ease-in-out infinite; text-align:center; }
+  @keyframes loadpulse{ 50%{ opacity:.4; transform:scale(.92); } }
+  .loader-bar{ width:200px; height:3px; background:rgba(255,255,255,.1); border-radius:50px; margin:24px auto 0; overflow:hidden; }
+  .loader-bar i{ display:block; height:100%; width:0; background:linear-gradient(90deg,var(--acc),var(--acc3)); animation:loadfill 1.6s ease forwards; }
+  @keyframes loadfill{ to{ width:100%; } }
+  .loader-txt{ font-family:var(--display); letter-spacing:5px; color:var(--muted); margin-top:18px; font-size:.9rem; text-align:center; }
+  #progress{ position:fixed; top:0; left:0; height:3px; width:0; z-index:60; background:linear-gradient(90deg,var(--acc),var(--acc3),var(--neon)); box-shadow:0 0 12px var(--acc); }
+  #cursor{ position:fixed; top:0; left:0; width:380px; height:380px; border-radius:50%; pointer-events:none; z-index:40; transform:translate(-50%,-50%); background:radial-gradient(circle,rgba(155,92,255,.12),transparent 65%); transition:opacity .3s; mix-blend-mode:screen; }
+  .links a.active{ color:var(--txt); } .links a.active::after{ width:100%; }
+  #modal{ position:fixed; inset:0; z-index:120; display:grid; place-items:center; padding:24px; opacity:0; visibility:hidden; transition:.3s; }
+  #modal.open{ opacity:1; visibility:visible; }
+  #modal .backdrop{ position:absolute; inset:0; background:rgba(4,2,10,.82); backdrop-filter:blur(8px); }
+  #modal .panel{ position:relative; z-index:1; width:min(720px,94%); background:linear-gradient(160deg,var(--card),var(--bg-soft)); border:1px solid var(--line); border-radius:24px; overflow:hidden; transform:scale(.9); transition:.35s cubic-bezier(.2,.9,.3,1.4); }
+  #modal.open .panel{ transform:scale(1); }
+  #modal .screen{ aspect-ratio:16/9; display:grid; place-items:center; position:relative; background:linear-gradient(135deg,#2a1a52,#06040e); }
+  #modal .screen .pulse{ width:80px; height:80px; border-radius:50%; background:rgba(155,92,255,.9); display:grid; place-items:center; font-size:1.6rem; color:#fff; box-shadow:0 0 0 0 rgba(155,92,255,.5); animation:ring 1.8s infinite; }
+  @keyframes ring{ 70%{ box-shadow:0 0 0 28px rgba(155,92,255,0); } 100%{ box-shadow:0 0 0 0 rgba(155,92,255,0); } }
+  #modal .pinfo{ padding:26px 30px; } #modal .pinfo h3{ font-size:1.5rem; margin-bottom:6px; } #modal .pinfo p{ color:var(--muted); font-weight:300; }
+  #modal .close{ position:absolute; top:14px; right:14px; z-index:2; width:40px; height:40px; border-radius:50%; border:1px solid var(--line); background:rgba(6,4,14,.6); color:#fff; cursor:pointer; font-size:1.1rem; transition:.3s; }
+  #modal .close:hover{ background:var(--acc3); border-color:var(--acc3); transform:rotate(90deg); }
+  #toTop{ position:fixed; bottom:28px; right:28px; z-index:55; width:50px; height:50px; border-radius:50%; border:0; cursor:pointer; background:linear-gradient(135deg,var(--acc),var(--acc3)); color:#fff; font-size:1.2rem; box-shadow:0 8px 26px rgba(155,92,255,.45); opacity:0; visibility:hidden; transform:translateY(20px); transition:.4s; }
+  #toTop.show{ opacity:1; visibility:visible; transform:translateY(0); }
+  #toTop:hover{ transform:translateY(-4px); }
+
+  /* ============ SCROLL KATANA (3D, SVG) ============ */
+  .katana-wrap{ position:fixed; top:76px; left:50%; z-index:6; pointer-events:none; transform:translate(-50%,0); transition:transform .12s linear; }
+  .katana{ position:relative; animation:katanaDrop 1.5s cubic-bezier(.2,.7,.3,1.25) both; }
+  @keyframes katanaDrop{ 0%{ transform:translateY(-130vh) rotate(12deg); opacity:0; } 100%{ transform:translateY(0) rotate(0deg); opacity:1; } }
+  .katana-rot{ transform-origin:50% 52%; transition:transform .12s linear; }
+  .katana-3d{ width:auto; margin:0 auto; transform-style:preserve-3d; animation:katanaSway 5.5s ease-in-out infinite; }
+  @keyframes katanaSway{ 0%,100%{ transform:rotateY(-18deg); } 50%{ transform:rotateY(18deg); } }
+  .katana-img{ width:250px; height:auto; display:block; filter:drop-shadow(0 0 11px rgba(255,106,0,.55)); }
+  @media(max-width:560px){ .katana-img{ width:170px; } }
+
+  /* decorative sword divider under hero title */
+  .sword-divider{ width:min(370px,78%); height:auto; display:block; margin:4px auto 30px; filter:drop-shadow(0 0 10px rgba(255,106,0,.5)); animation:swordGlow 3s ease-in-out infinite; }
+  @keyframes swordGlow{ 50%{ filter:drop-shadow(0 0 20px rgba(255,106,0,.8)); } }
+
+  /* hero anime slider */
+  .hero-slider{ width:min(880px,94%); margin-top:46px; overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent); }
+  .hs-track{ display:flex; gap:18px; width:max-content; animation:hsScroll 32s linear infinite; }
+  .hero-slider:hover .hs-track{ animation-play-state:paused; }
+  .hs-item{ width:118px; flex-shrink:0; text-align:center; }
+  .hs-item img{ width:118px; height:158px; object-fit:cover; border-radius:12px; border:1px solid var(--line); transition:.3s; }
+  .hs-item:hover img{ border-color:var(--acc); transform:translateY(-6px); box-shadow:0 14px 32px rgba(155,92,255,.4); }
+  .hs-item span{ display:block; margin-top:9px; font-size:.78rem; color:#d2cee2; font-weight:500; }
+  @keyframes hsScroll{ to{ transform:translateX(calc(-50% - 9px)); } }
+
+  /* ============ RESPONSIVE ============ */
+  @media(max-width:900px){
+    .links,.nav-cta{ display:none; }
+    .burger{ display:flex; }
+    .links.open{ display:flex; flex-direction:column; position:absolute; top:62px; right:0; background:var(--bg-soft); border:1px solid var(--line); border-radius:14px; padding:22px 28px; gap:18px; min-width:180px; }
+    .about-grid{ grid-template-columns:1fr; } .grid{ grid-template-columns:1fr 1fr; }
+    .statstrip{ grid-template-columns:1fr 1fr; } .reviews{ grid-template-columns:1fr; }
+    .plans{ grid-template-columns:1fr; } .top10{ grid-template-columns:1fr; }
+    .fcols{ grid-template-columns:1fr 1fr; gap:30px; }
+    .card{ transform:none !important; }
+  }
+  @media(max-width:560px){
+    .grid{ grid-template-columns:1fr; } .statstrip{ grid-template-columns:1fr 1fr; }
+    .ep .thumb{ display:none; } .fcols{ grid-template-columns:1fr; }
+    .spotlight .box{ padding:36px 26px; min-height:auto; }
+    #cursor{ display:none; } #toTop{ bottom:18px; right:18px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div id="loader"><div><div class="loader-kanji">炎</div><div class="loader-bar"><i></i></div><div class="loader-txt">ANIVERSE</div></div></div>
+  <div id="progress"></div>
+  <div id="cursor"></div>
+
+  <!-- SCROLL KATANA (Nichirin blade, SVG) -->
+  <div class="katana-wrap" id="katana" aria-hidden="true">
+    <div class="katana">
+      <div class="katana-rot" id="katanaRot">
+        <div class="katana-3d">
+          <img class="katana-img" src="{{ url_for('static', filename='img/sword.png') }}" alt="katana" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <header id="head">
+    <div class="wrap">
+      <nav>
+        <div class="brand-logo">
+          <div class="logo">ANI<span>VERSE</span></div>
+          <svg class="logo-sword" viewBox="0 0 200 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="lBlade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a10"/><stop offset=".5" stop-color="#5c5c6b"/><stop offset="1" stop-color="#0a0a10"/></linearGradient>
+              <linearGradient id="lFlame" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2200"/><stop offset=".5" stop-color="#ffb347"/><stop offset="1" stop-color="#fff4c2"/></linearGradient>
+            </defs>
+            <rect x="6" y="6.5" width="26" height="5" rx="2" fill="#241a40"/>
+            <g stroke="#120c24" stroke-width=".8" opacity=".8"><path d="M9,6.5 L15,11.5 M15,6.5 L9,11.5 M19,6.5 L25,11.5 M25,6.5 L19,11.5"/></g>
+            <rect x="2" y="5.5" width="5" height="7" rx="2" fill="#3a2d5c"/>
+            <ellipse cx="35" cy="9" rx="2.6" ry="6" fill="#8466c8" stroke="#160f2c"/>
+            <path d="M40,7 C100,5.5 150,7 188,8.5 L196,9 L188,9.5 C150,11 100,12.5 40,11 Z" fill="url(#lBlade)"/>
+            <path d="M42,7 C100,5.5 150,7 194,9" fill="none" stroke="url(#lFlame)" stroke-width="1.4" opacity=".9"/>
+          </svg>
+        </div>
+        <div class="links" id="links">
+          <a href="#power">Power</a>
+          <a href="#chars">Characters</a>
+          <a href="#top10">Top 10</a>
+          <a href="#eps">Episodes</a>
+          <a href="#plans">Plans</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <a href="#join" class="btn nav-cta">Start Watching</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <video class="hero-media" autoplay muted loop playsinline poster="{{ url_for('static', filename='hero.jpg') }}">
+      <source src="{{ url_for('static', filename='hero.mp4') }}" type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="embers">
+      <span class="ember" style="left:10%; animation-duration:9s;"></span><span class="ember" style="left:22%; animation-duration:11s; animation-delay:2s;"></span>
+      <span class="ember" style="left:35%; animation-duration:8s; animation-delay:4s;"></span><span class="ember" style="left:48%; animation-duration:12s; animation-delay:1s;"></span>
+      <span class="ember" style="left:60%; animation-duration:10s; animation-delay:3s;"></span><span class="ember" style="left:72%; animation-duration:9s; animation-delay:5s;"></span>
+      <span class="ember" style="left:85%; animation-duration:13s; animation-delay:2.5s;"></span><span class="ember" style="left:92%; animation-duration:7s; animation-delay:6s;"></span>
+    </div>
+    <div class="wrap" id="heroTilt">
+      <div class="badge reveal in"><span class="dot"></span> New Season · Now Streaming in 4K</div>
+      <h1 class="reveal in d1">Unleash The<br/><span class="grad">Blade Of Flame</span></h1>
+      <p class="reveal in d2">Enter a universe of legendary warriors, breathtaking battles, and unstoppable spirit. Stream the greatest anime sagas ever told — all in one realm.</p>
+      <div class="cta reveal in d3">
+        <a href="#chars" class="btn">▶ Watch Now</a>
+        <a href="#power" class="btn ghost">Explore the Realm</a>
+      </div>
+      <div class="hero-slider reveal in d4">
+        <div class="hs-track">
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char1.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Demon Slayer</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char2.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Jujutsu Kaisen</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char5.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>One Piece</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char6.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Attack on Titan</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char7.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Chainsaw Man</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char4.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Naruto</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char8.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>My Hero Academia</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char9.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Fullmetal Alchemist</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char3.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Swordsmith Village</span></div>
+          <!-- duplicate set for seamless loop -->
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char1.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Demon Slayer</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char2.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Jujutsu Kaisen</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char5.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>One Piece</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char6.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Attack on Titan</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char7.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Chainsaw Man</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char4.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Naruto</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char8.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>My Hero Academia</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char9.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Fullmetal Alchemist</span></div>
+          <div class="hs-item"><img src="{{ url_for('static', filename='img/char3.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><span>Swordsmith Village</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="scrolldown reveal in d4"><span>Scroll</span><span class="mouse"></span></div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee"><div class="track">
+    <span>DEMON SLAYER</span><span>JUJUTSU KAISEN</span><span>ATTACK ON TITAN</span><span>ONE PIECE</span><span>NARUTO</span><span>DRAGON BALL</span>
+    <span>DEMON SLAYER</span><span>JUJUTSU KAISEN</span><span>ATTACK ON TITAN</span><span>ONE PIECE</span><span>NARUTO</span><span>DRAGON BALL</span>
+  </div></div>
+
+  <!-- STATS -->
+  <section style="padding-top:90px;">
+    <div class="wrap"><div class="statstrip">
+      <div class="stat reveal"><div class="n">500+</div><div class="l">ANIME SERIES</div></div>
+      <div class="stat reveal d1"><div class="n">12K+</div><div class="l">EPISODES</div></div>
+      <div class="stat reveal d2"><div class="n">9.8</div><div class="l">AVG RATING</div></div>
+      <div class="stat reveal d3"><div class="n">2M+</div><div class="l">GLOBAL FANS</div></div>
+    </div></div>
+  </section>
+
+  <!-- POWER -->
+  <section id="power">
+    <div class="wrap">
+      <div class="head reveal">
+        <div class="eyebrow">Power Levels</div>
+        <h2 class="title">Mastery beyond the <em>mortal limit</em></h2>
+        <p class="lead">Every warrior trains to transcend. Witness the abilities that forge a true legend of the realm.</p>
+      </div>
+      <div class="about-grid">
+        <div class="reveal">
+          <p style="color:var(--muted); margin-bottom:18px; font-weight:300;">ANIVERSE unites the most iconic heroes and villains across every saga. From explosive transformations to silent, perfected technique — power lives here in its purest form.</p>
+          <p style="color:var(--muted); margin-bottom:30px; font-weight:300;">Whether you crave raw strength, lightning speed, or unbreakable spirit, there's a fighter whose journey becomes your own. The battle never ends — and neither does the binge.</p>
+          <a href="#chars" class="btn">Meet the Fighters</a>
+        </div>
+        <div class="about-card reveal d1">
+          <div class="skill"><div class="row"><span>Strength</span><span>98%</span></div><div class="bar"><i style="--w:98%"></i></div></div>
+          <div class="skill"><div class="row"><span>Speed</span><span>95%</span></div><div class="bar"><i style="--w:95%"></i></div></div>
+          <div class="skill"><div class="row"><span>Ki / Energy Control</span><span>92%</span></div><div class="bar"><i style="--w:92%"></i></div></div>
+          <div class="skill"><div class="row"><span>Endurance</span><span>90%</span></div><div class="bar"><i style="--w:90%"></i></div></div>
+          <div class="skill"><div class="row"><span>Fighting Spirit</span><span>99%</span></div><div class="bar"><i style="--w:99%"></i></div></div>
+        </div>
+      </div>
+      <!-- ANIME SLIDER -->
+      <div class="aslider reveal" id="aslider">
+        <div class="aslide-track" id="aTrack">
+          <div class="aslide">
+            <div class="aslide-img"><img src="{{ url_for('static', filename='img/char1.jpg') }}" alt="Demon Slayer" onerror="this.style.opacity=0"/></div>
+            <div class="aslide-info"><span class="tag">Dark Fantasy · Action</span><h3>Demon Slayer</h3>
+              <div class="rate">★★★★★ <b>9.9</b><small>/10</small></div>
+              <p>Tanjiro's relentless journey to avenge his family and cure his sister. Breathtaking animation and unforgettable breath-style battles.</p>
+              <div class="metarow"><span>📅 2019</span><span>🎬 Ufotable</span><span>📺 55 Episodes</span></div>
+              <button class="btn" data-trailer="Demon Slayer|Tanjiro's journey to slay demons and cure his sister Nezuko.">▶ Watch Now</button>
+            </div>
+          </div>
+          <div class="aslide">
+            <div class="aslide-img"><img src="{{ url_for('static', filename='img/char2.jpg') }}" alt="Jujutsu Kaisen" onerror="this.style.opacity=0"/></div>
+            <div class="aslide-info"><span class="tag">Supernatural · Action</span><h3>Jujutsu Kaisen</h3>
+              <div class="rate">★★★★★ <b>9.8</b><small>/10</small></div>
+              <p>Cursed energy, sorcerers, and the swallowed King of Curses. A dark, stylish supernatural war for humanity's survival.</p>
+              <div class="metarow"><span>📅 2020</span><span>🎬 MAPPA</span><span>📺 47 Episodes</span></div>
+              <button class="btn" data-trailer="Jujutsu Kaisen|Yuji Itadori joins the sorcerers to fight cursed spirits.">▶ Watch Now</button>
+            </div>
+          </div>
+          <div class="aslide">
+            <div class="aslide-img"><img src="{{ url_for('static', filename='img/char5.jpg') }}" alt="One Piece" onerror="this.style.opacity=0"/></div>
+            <div class="aslide-info"><span class="tag">Adventure · Fantasy</span><h3>One Piece</h3>
+              <div class="rate">★★★★★ <b>9.8</b><small>/10</small></div>
+              <p>Luffy and his crew sail the Grand Line chasing the legendary One Piece. The greatest pirate adventure ever told.</p>
+              <div class="metarow"><span>📅 1999</span><span>🎬 Toei</span><span>📺 1000+ Episodes</span></div>
+              <button class="btn" data-trailer="One Piece|Monkey D. Luffy's quest to become King of the Pirates.">▶ Watch Now</button>
+            </div>
+          </div>
+          <div class="aslide">
+            <div class="aslide-img"><img src="{{ url_for('static', filename='img/char6.jpg') }}" alt="Attack on Titan" onerror="this.style.opacity=0"/></div>
+            <div class="aslide-info"><span class="tag">Action · Drama</span><h3>Attack on Titan</h3>
+              <div class="rate">★★★★★ <b>9.7</b><small>/10</small></div>
+              <p>Humanity's last stand behind towering walls against man-eating Titans. A brutal, mind-bending masterpiece.</p>
+              <div class="metarow"><span>📅 2013</span><span>🎬 WIT / MAPPA</span><span>📺 89 Episodes</span></div>
+              <button class="btn" data-trailer="Attack on Titan|Eren fights for humanity's survival against the Titans.">▶ Watch Now</button>
+            </div>
+          </div>
+          <div class="aslide">
+            <div class="aslide-img"><img src="{{ url_for('static', filename='img/char7.jpg') }}" alt="Chainsaw Man" onerror="this.style.opacity=0"/></div>
+            <div class="aslide-info"><span class="tag">Dark Fantasy · Action</span><h3>Chainsaw Man</h3>
+              <div class="rate">★★★★★ <b>9.6</b><small>/10</small></div>
+              <p>Denji becomes the Chainsaw Devil to escape a life of crushing debt. Raw, chaotic, and gloriously unhinged.</p>
+              <div class="metarow"><span>📅 2022</span><span>🎬 MAPPA</span><span>📺 12 Episodes</span></div>
+              <button class="btn" data-trailer="Chainsaw Man|Denji fuses with his devil dog to become Chainsaw Man.">▶ Watch Now</button>
+            </div>
+          </div>
+        </div>
+        <button class="aslide-nav prev" aria-label="Previous">‹</button>
+        <button class="aslide-nav next" aria-label="Next">›</button>
+        <div class="adots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHARACTERS -->
+  <section id="chars">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Legendary Roster</div>
+        <h2 class="title">Choose your <em>champion</em></h2>
+        <p class="lead">Nine icons. Infinite power. Tap a card to preview — hit the heart to add to your watchlist.</p>
+      </div>
+      <div class="grid">
+        <article class="card reveal" data-tilt><div class="thumb"><div class="g g1"></div><img class="poster" src="{{ url_for('static', filename='img/char1.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">S+ TIER</span><span class="fav">♥</span><span class="kanji">炎</span></div>
+          <div class="body"><div class="tag">Flame Hashira</div><h3>Blade of Flame</h3><p>A swordsman whose blazing strikes cut through the darkest night.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:99%"></i></div><span>99</span></div></div></article>
+        <article class="card reveal d1" data-tilt><div class="thumb"><div class="g g2"></div><img class="poster" src="{{ url_for('static', filename='img/char2.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">S TIER</span><span class="fav">♥</span><span class="kanji">呪</span></div>
+          <div class="body"><div class="tag">Sorcerer</div><h3>Cursed Spirit King</h3><p>Master of forbidden techniques and limitless domain expansion.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:94%"></i></div><span>94</span></div></div></article>
+        <article class="card reveal d2" data-tilt><div class="thumb"><div class="g g3"></div><img class="poster" src="{{ url_for('static', filename='img/char3.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">A+ TIER</span><span class="fav">♥</span><span class="kanji">鬼</span></div>
+          <div class="body"><div class="tag">Demon Slayer</div><h3>Water Breather</h3><p>Breath of water and unbreakable will against the eternal hunt.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:91%"></i></div><span>91</span></div></div></article>
+        <article class="card reveal" data-tilt><div class="thumb"><div class="g g4"></div><img class="poster" src="{{ url_for('static', filename='img/char4.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">S TIER</span><span class="fav">♥</span><span class="kanji">忍</span></div>
+          <div class="body"><div class="tag">Shinobi</div><h3>Shadow Hokage</h3><p>The will of fire passed through generations of legendary warriors.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:93%"></i></div><span>93</span></div></div></article>
+        <article class="card reveal d1" data-tilt><div class="thumb"><div class="g g5"></div><img class="poster" src="{{ url_for('static', filename='img/char5.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">S+ TIER</span><span class="fav">♥</span><span class="kanji">海</span></div>
+          <div class="body"><div class="tag">Pirate King</div><h3>Gear Five</h3><p>The freedom-bound captain chasing the ultimate treasure of the seas.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:96%"></i></div><span>96</span></div></div></article>
+        <article class="card reveal d2" data-tilt><div class="thumb"><div class="g g6"></div><img class="poster" src="{{ url_for('static', filename='img/char6.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">S+ TIER</span><span class="fav">♥</span><span class="kanji">巨</span></div>
+          <div class="body"><div class="tag">Titan</div><h3>Founding Power</h3><p>Bearer of the coordinate and the crushing weight of true freedom.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:97%"></i></div><span>97</span></div></div></article>
+        <article class="card reveal" data-tilt><div class="thumb"><div class="g g3"></div><img class="poster" src="{{ url_for('static', filename='img/char7.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">S TIER</span><span class="fav">♥</span><span class="kanji">鎖</span></div>
+          <div class="body"><div class="tag">Devil Hunter</div><h3>Chainsaw Heart</h3><p>A reckless hunter fused with the chainsaw devil — chaos incarnate.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:95%"></i></div><span>95</span></div></div></article>
+        <article class="card reveal d1" data-tilt><div class="thumb"><div class="g g4"></div><img class="poster" src="{{ url_for('static', filename='img/char8.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">A+ TIER</span><span class="fav">♥</span><span class="kanji">英</span></div>
+          <div class="body"><div class="tag">Hero</div><h3>One For All</h3><p>The inheritor of a sacred power, training to become the symbol of peace.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:90%"></i></div><span>90</span></div></div></article>
+        <article class="card reveal d2" data-tilt><div class="thumb"><div class="g g6"></div><img class="poster" src="{{ url_for('static', filename='img/char9.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">S+ TIER</span><span class="fav">♥</span><span class="kanji">鋼</span></div>
+          <div class="body"><div class="tag">Alchemist</div><h3>Fullmetal</h3><p>A prodigy chasing the Philosopher's Stone to restore what was lost.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:96%"></i></div><span>96</span></div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPOTLIGHT -->
+  <section class="spotlight">
+    <div class="wrap">
+      <div class="box reveal" data-tilt-soft>
+        <div class="bg"><img class="poster" src="{{ url_for('static', filename='img/spotlight.jpg') }}" alt="" onerror="this.remove()" /></div>
+        <div class="content">
+          <span class="pill">🔥 FEATURED THIS WEEK</span>
+          <h2>Demon Slayer:<br/>Infinity Castle</h2>
+          <p>The final battle ignites. As the Hashira storm the demon king's fortress, every blade and every breath will be tested. Witness the saga's most explosive arc yet.</p>
+          <div class="info"><span><b>★ 9.9</b> Rating</span><span><b>2026</b> Release</span><span><b>Action · Dark Fantasy</b></span></div>
+          <button class="btn" data-trailer="Demon Slayer: Infinity Castle|The final battle against the demon king begins.">▶ Watch Trailer</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP 10 -->
+  <section id="top10">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Trending Now</div>
+        <h2 class="title">Top 10 <em>this week</em></h2>
+        <p class="lead">The most-watched sagas across the realm, ranked by millions of fans.</p>
+      </div>
+      <div class="top10">
+        <div class="trank reveal"><div class="num">1</div><img class="pic" src="{{ url_for('static', filename='img/char1.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>Demon Slayer</h4><span class="st">★ 9.9</span> <span>· Dark Fantasy</span></div></div>
+        <div class="trank reveal d1"><div class="num">2</div><img class="pic" src="{{ url_for('static', filename='img/char2.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>Jujutsu Kaisen</h4><span class="st">★ 9.8</span> <span>· Supernatural</span></div></div>
+        <div class="trank reveal"><div class="num">3</div><img class="pic" src="{{ url_for('static', filename='img/char5.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>One Piece</h4><span class="st">★ 9.8</span> <span>· Adventure</span></div></div>
+        <div class="trank reveal d1"><div class="num">4</div><img class="pic" src="{{ url_for('static', filename='img/char6.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>Attack on Titan</h4><span class="st">★ 9.7</span> <span>· Action</span></div></div>
+        <div class="trank reveal"><div class="num">5</div><img class="pic" src="{{ url_for('static', filename='img/char7.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>Chainsaw Man</h4><span class="st">★ 9.6</span> <span>· Dark Fantasy</span></div></div>
+        <div class="trank reveal d1"><div class="num">6</div><img class="pic" src="{{ url_for('static', filename='img/char9.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>Fullmetal Alchemist</h4><span class="st">★ 9.6</span> <span>· Adventure</span></div></div>
+        <div class="trank reveal"><div class="num">7</div><img class="pic" src="{{ url_for('static', filename='img/char4.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>Naruto</h4><span class="st">★ 9.5</span> <span>· Shonen</span></div></div>
+        <div class="trank reveal d1"><div class="num">8</div><img class="pic" src="{{ url_for('static', filename='img/char8.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>My Hero Academia</h4><span class="st">★ 9.4</span> <span>· Superhero</span></div></div>
+        <div class="trank reveal"><div class="num">9</div><img class="pic" src="{{ url_for('static', filename='img/char3.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>Swordsmith Village</h4><span class="st">★ 9.4</span> <span>· Dark Fantasy</span></div></div>
+        <div class="trank reveal d1"><div class="num">10</div><img class="pic" src="{{ url_for('static', filename='img/ep3.jpg') }}" alt="" onerror="this.style.visibility='hidden'"/><div class="meta"><h4>Mugen Train</h4><span class="st">★ 9.3</span> <span>· Action</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GENRES -->
+  <section id="genres">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Find Your Vibe</div>
+        <h2 class="title">Explore every <em>genre</em></h2>
+        <p class="lead">From heart-pounding shonen battles to tender slice-of-life — your next obsession awaits.</p>
+      </div>
+      <div class="genres reveal d1">
+        <span class="genre">⚔️ Action</span><span class="genre">🔥 Shonen</span><span class="genre">👹 Dark Fantasy</span><span class="genre">💫 Adventure</span>
+        <span class="genre">🌸 Romance</span><span class="genre">😂 Comedy</span><span class="genre">🧠 Psychological</span><span class="genre">🤖 Mecha</span>
+        <span class="genre">🗡️ Samurai</span><span class="genre">🌙 Supernatural</span><span class="genre">🎭 Drama</span><span class="genre">🏫 Slice of Life</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EPISODES -->
+  <section id="eps">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Now Streaming</div>
+        <h2 class="title">Latest <em>episodes</em></h2>
+        <p class="lead">Fresh drops from the most-watched arcs of the season.</p>
+      </div>
+      <div class="eps">
+        <div class="ep reveal"><div class="thumb"><div class="g g1"></div><img class="poster" src="{{ url_for('static', filename='img/ep1.jpg') }}" alt="" onerror="this.remove()" /><span class="play">▶</span></div><div class="no">01</div><div class="info"><h4>The Awakening</h4><span>Season 5 · Tournament Arc</span></div><div class="meta"><span class="star">★ 9.7</span><span>24 min</span></div></div>
+        <div class="ep reveal d1"><div class="thumb"><div class="g g2"></div><img class="poster" src="{{ url_for('static', filename='img/ep2.jpg') }}" alt="" onerror="this.remove()" /><span class="play">▶</span></div><div class="no">02</div><div class="info"><h4>Domain Expansion</h4><span>Season 5 · Shibuya Arc</span></div><div class="meta"><span class="star">★ 9.9</span><span>23 min</span></div></div>
+        <div class="ep reveal d2"><div class="thumb"><div class="g g3"></div><img class="poster" src="{{ url_for('static', filename='img/ep3.jpg') }}" alt="" onerror="this.remove()" /><span class="play">▶</span></div><div class="no">03</div><div class="info"><h4>Breath of the Final Form</h4><span>Season 5 · Infinity Castle</span></div><div class="meta"><span class="star">★ 9.8</span><span>25 min</span></div></div>
+        <div class="ep reveal d3"><div class="thumb"><div class="g g6"></div><img class="poster" src="{{ url_for('static', filename='img/ep4.jpg') }}" alt="" onerror="this.remove()" /><span class="play">▶</span></div><div class="no">04</div><div class="info"><h4>The Last Stand</h4><span>Season 5 · Marley War</span></div><div class="meta"><span class="star">★ 9.6</span><span>26 min</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANS -->
+  <section id="plans">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Membership</div>
+        <h2 class="title">Choose your <em>plan</em></h2>
+        <p class="lead">Start free, upgrade anytime. Cancel whenever you want — no demon contracts.</p>
+      </div>
+      <div class="plans">
+        <div class="plan reveal">
+          <h3>Rookie</h3><div class="price">Free</div>
+          <ul><li>Ad-supported streaming</li><li>720p quality</li><li>1 device at a time</li><li>Limited catalog</li></ul>
+          <a href="#join" class="btn ghost">Get Started</a>
+        </div>
+        <div class="plan pop reveal d1">
+          <h3>Hashira</h3><div class="price">$9<span>/mo</span></div>
+          <ul><li>Ad-free streaming</li><li>Full 1080p HD</li><li>2 devices at once</li><li>Full catalog + simulcasts</li><li>Offline downloads</li></ul>
+          <a href="#join" class="btn">Start Free Trial</a>
+        </div>
+        <div class="plan reveal d2">
+          <h3>Legend</h3><div class="price">$16<span>/mo</span></div>
+          <ul><li>Everything in Hashira</li><li>Stunning 4K + HDR</li><li>4 devices at once</li><li>Same-day Japan releases</li><li>Exclusive premieres</li></ul>
+          <a href="#join" class="btn ghost">Go Legend</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Fan Voices</div>
+        <h2 class="title">Loved by <em>millions</em></h2>
+        <p class="lead">Don't take our word for it — hear it from the realm's most devoted fans.</p>
+      </div>
+      <div class="reviews">
+        <div class="review reveal"><div class="stars">★★★★★</div><p>"The 4K streaming is flawless and the catalog is insane. Every saga I grew up with, plus the newest seasons the same day they air in Japan. ANIVERSE is unreal."</p><div class="who"><div class="av" style="background:linear-gradient(135deg,#5ad2ff,#9b5cff)">K</div><div><h5>Kenji Tanaka</h5><span>Otaku since 2009</span></div></div></div>
+        <div class="review reveal d1"><div class="stars">★★★★★</div><p>"The UI feels like it was designed by fans, for fans. The character tiers, the power stats, the 3D cards — I lose hours here. Worth every yen."</p><div class="who"><div class="av" style="background:linear-gradient(135deg,#9b5cff,#d24dff)">A</div><div><h5>Aiko Mori</h5><span>Cosplay Artist</span></div></div></div>
+        <div class="review reveal d2"><div class="stars">★★★★★</div><p>"No buffering, no ads mid-fight, subtitles that actually make sense. I switched from three other apps and never looked back. This is THE anime home."</p><div class="who"><div class="av" style="background:linear-gradient(135deg,#d24dff,#5ad2ff)">R</div><div><h5>Ravi Sharma</h5><span>Streamer · 80K subs</span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Questions</div>
+        <h2 class="title">Frequently <em>asked</em></h2>
+        <p class="lead">Everything you need to know before you enter the realm.</p>
+      </div>
+      <div class="faq reveal d1">
+        <div class="faq-item"><button class="faq-q">Can I watch on any device? <span>+</span></button><div class="faq-a"><p>Yes! ANIVERSE works on your phone, tablet, laptop, smart TV, and game consoles. Your watchlist and progress sync everywhere automatically.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Are episodes subbed and dubbed? <span>+</span></button><div class="faq-a"><p>Both. Every series offers high-quality subtitles in multiple languages, and most popular titles include professional English dubs.</p></div></div>
+        <div class="faq-item"><button class="faq-q">How fast are new episodes added? <span>+</span></button><div class="faq-a"><p>With the Legend plan, simulcast episodes drop the same day they air in Japan — often within an hour of the original broadcast.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Can I cancel anytime? <span>+</span></button><div class="faq-a"><p>Absolutely. There are no long-term commitments. Cancel in two clicks from your account settings and keep access until your billing period ends.</p></div></div>
+        <div class="faq-item"><button class="faq-q">Is there a free trial? <span>+</span></button><div class="faq-a"><p>Yes — every paid plan starts with a 7-day free trial. Explore the full catalog in 4K, and you won't be charged if you cancel before it ends.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN -->
+  <section id="join" class="contact">
+    <div class="wrap">
+      <div class="box reveal">
+        <div class="eyebrow" style="position:relative">Join the Realm</div>
+        <h2>Your legend<br/>begins right now</h2>
+        <p>Unlimited anime. Zero limits. Stream every saga in stunning 4K — anywhere, anytime. Start your free 7-day trial today.</p>
+        <form class="form" onsubmit="return false;">
+          <input type="email" placeholder="Enter your email" required />
+          <button class="btn" type="submit">Start Free Trial</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="fcols">
+        <div class="brand"><div class="logo">ANI<span>VERSE</span></div><p>The ultimate home for anime fans. Stream legendary sagas, discover new worlds, and join a realm of millions.</p></div>
+        <div><h6>Explore</h6><a href="#chars">Characters</a><a href="#top10">Top 10</a><a href="#eps">Episodes</a><a href="#plans">Plans</a></div>
+        <div><h6>Company</h6><a href="#">About Us</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Contact</a></div>
+        <div><h6>Support</h6><a href="#faq">Help Center</a><a href="#">Devices</a><a href="#">Terms</a><a href="#">Privacy</a></div>
+      </div>
+      <div class="foot">
+        <div>&copy; 2026 ANIVERSE. Powered by spirit energy. 🔮</div>
+        <div class="socials"><a href="#">X</a><a href="#">Dc</a><a href="#">Yt</a><a href="#">Ig</a><a href="#">Tk</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div id="modal">
+    <div class="backdrop" data-close></div>
+    <div class="panel"><button class="close" data-close aria-label="Close">✕</button><div class="screen"><div class="pulse">▶</div></div><div class="pinfo"><h3 id="mTitle">Trailer</h3><p id="mDesc">Now playing preview…</p></div></div>
+  </div>
+  <button id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+  // loader
+  addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('done'), 1600));
+
+  const head = document.getElementById('head');
+  const burger = document.getElementById('burger');
+  const links = document.getElementById('links');
+  burger.addEventListener('click', () => links.classList.toggle('open'));
+  links.addEventListener('click', e => { if(e.target.tagName === 'A') links.classList.remove('open'); });
+
+  // reveal
+  const io = new IntersectionObserver(es => { es.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold:.14 });
+  document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+
+  // counters
+  const counted = new WeakSet();
+  const cio = new IntersectionObserver(es => { es.forEach(en => {
+    if(en.isIntersecting && !counted.has(en.target)){ counted.add(en.target);
+      const el = en.target, raw = el.dataset.val, num = parseFloat(raw), suffix = raw.replace(/[0-9.]/g,''), dec = raw.includes('.');
+      let t0 = null; const step = ts => { if(!t0) t0 = ts; const p = Math.min((ts-t0)/1400,1); const v = num*(1-Math.pow(1-p,3));
+        el.textContent = (dec ? v.toFixed(1) : Math.floor(v)) + suffix; if(p<1) requestAnimationFrame(step); else el.textContent = raw; }; requestAnimationFrame(step);
+    }}); }, { threshold:.5 });
+  document.querySelectorAll('.stat .n').forEach(el => { el.dataset.val = el.textContent; cio.observe(el); });
+
+  // scroll: progress, nav, active, toTop
+  const prog = document.getElementById('progress'), toTop = document.getElementById('toTop');
+  const navLinks = [...document.querySelectorAll('.links a')];
+  const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const katana = document.getElementById('katana');
+  const katanaRot = document.getElementById('katanaRot');
+  function onScroll(){ const h = document.documentElement, sc = h.scrollTop, max = h.scrollHeight - h.clientHeight;
+    const frac = max>0 ? sc/max : 0;
+    prog.style.width = (frac*100)+'%';
+    head.classList.toggle('scrolled', sc>30); toTop.classList.toggle('show', sc>600);
+    let cur=''; sections.forEach(s => { if(sc >= s.offsetTop-140) cur='#'+s.id; });
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href')===cur));
+    // katana rides down the center, then drifts to the side near the bottom...
+    if(katana){
+      const travel = Math.max(innerHeight - 300, 0);
+      const y = frac * travel;
+      const ease = Math.max(0, (frac - 0.4) / 0.6);     // stays centered until 40%, then eases out
+      const xShift = ease * ease * (innerWidth * 0.36); // drift toward the right edge
+      katana.style.transform = `translate(-50%, ${y}px)`;
+    }
+    // ...and rotates horizontal -> vertical -> horizontal across the page
+    if(katanaRot){ const ang = 90*Math.sin(frac*Math.PI); katanaRot.style.transform = `rotate(${ang}deg)`; }
+  }
+  addEventListener('scroll', onScroll); onScroll();
+  toTop.addEventListener('click', () => scrollTo({top:0, behavior:'smooth'}));
+
+  // cursor glow
+  const cursor = document.getElementById('cursor');
+  addEventListener('mousemove', e => { cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px'; });
+
+  // ===== 3D TILT =====
+  function tilt(el, max){ el.addEventListener('mousemove', e => { const r = el.getBoundingClientRect();
+      const px = (e.clientX-r.left)/r.width-0.5, py = (e.clientY-r.top)/r.height-0.5;
+      el.style.setProperty('--ry', (px*max)+'deg'); el.style.setProperty('--rx', (-py*max)+'deg'); });
+    el.addEventListener('mouseleave', () => { el.style.setProperty('--ry','0deg'); el.style.setProperty('--rx','0deg'); }); }
+  document.querySelectorAll('[data-tilt]').forEach(el => tilt(el, 14));
+  document.querySelectorAll('[data-tilt-soft]').forEach(el => tilt(el, 6));
+  // hero parallax tilt
+  const heroTilt = document.getElementById('heroTilt');
+  if(heroTilt){ addEventListener('mousemove', e => { const px = e.clientX/innerWidth-0.5, py = e.clientY/innerHeight-0.5;
+    heroTilt.style.transform = `rotateY(${px*6}deg) rotateX(${-py*6}deg)`; }); }
+
+  // ===== WATCHLIST (hearts) =====
+  document.querySelectorAll('.card .fav').forEach((fav,i) => {
+    fav.addEventListener('click', e => { e.stopPropagation(); fav.classList.toggle('saved'); });
+  });
+
+  // ===== FAQ accordion =====
+  document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => {
+    const item = q.parentElement, a = q.nextElementSibling, open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(it => { it.classList.remove('open'); it.querySelector('.faq-a').style.maxHeight = null; });
+    if(!open){ item.classList.add('open'); a.style.maxHeight = a.scrollHeight+'px'; }
+  }));
+
+  // ===== modal =====
+  const modal = document.getElementById('modal'), mTitle = document.getElementById('mTitle'), mDesc = document.getElementById('mDesc');
+  function openModal(t,d){ mTitle.textContent = t; mDesc.textContent = d || 'Now playing preview…'; modal.classList.add('open'); }
+  function closeModal(){ modal.classList.remove('open'); }
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
+  addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+  document.querySelectorAll('[data-trailer]').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); const [t,d] = b.dataset.trailer.split('|'); openModal(t,d); }));
+  document.querySelectorAll('#chars .card').forEach(c => c.addEventListener('click', () => openModal(c.querySelector('h3').textContent, c.querySelector('p').textContent)));
+  document.querySelectorAll('#eps .ep').forEach(ep => ep.addEventListener('click', () => openModal(ep.querySelector('h4').textContent, ep.querySelector('span').textContent)));
+  document.querySelectorAll('#top10 .trank').forEach(t => t.addEventListener('click', () => openModal(t.querySelector('h4').textContent, 'Trending in the realm right now.')));
+  // ===== anime slider (Power) =====
+  (function(){
+    const track = document.getElementById('aTrack'); if(!track) return;
+    const slides = [...track.children]; let idx = 0;
+    const dotsWrap = document.querySelector('.adots');
+    slides.forEach((_,k) => { const d = document.createElement('button'); d.className = 'adot' + (k===0?' active':''); d.addEventListener('click', () => go(k)); dotsWrap.appendChild(d); });
+    const dots = [...dotsWrap.children];
+    function go(n){ idx = (n + slides.length) % slides.length; track.style.transform = `translateX(-${idx*100}%)`; dots.forEach((d,k) => d.classList.toggle('active', k===idx)); }
+    const sl = document.getElementById('aslider');
+    sl.querySelector('.aslide-nav.next').addEventListener('click', () => go(idx+1));
+    sl.querySelector('.aslide-nav.prev').addEventListener('click', () => go(idx-1));
+    let timer = setInterval(() => go(idx+1), 5000);
+    sl.addEventListener('mouseenter', () => clearInterval(timer));
+    sl.addEventListener('mouseleave', () => { clearInterval(timer); timer = setInterval(() => go(idx+1), 5000); });
+  })();
+</script>
+</body>
+</html>
+
+
+
+
+
