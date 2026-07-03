@@ -437,9 +437,20 @@
   .card.playing .thumb .livedot{ display:inline-flex; }
   .card .thumb .livedot::before{ content:""; width:6px; height:6px; border-radius:50%; background:#ff5a7a; box-shadow:0 0 8px #ff5a7a; animation:pulse 1.4s infinite; }
 
-  /* Hangul character for K-drama cards (mirrors .kanji, blue glow) */
-  .card .hangul{ position:relative; z-index:3; font-family:'Noto Sans KR',sans-serif; font-size:5rem; font-weight:900; color:rgba(255,255,255,.95); text-shadow:0 0 36px rgba(90,210,255,.65); transform:translateZ(45px); transition:.4s; }
-  .card:hover .hangul{ transform:translateZ(60px) scale(1.06); text-shadow:0 0 46px rgba(90,210,255,.9); }
+  /* Hangul character for K-drama cards (mirrors .kanji) */
+  .card .hangul{ position:relative; z-index:3; font-family:'Noto Sans KR',sans-serif; font-size:5rem; font-weight:900; color:rgba(255,255,255,.95); text-shadow:0 0 36px rgba(255,45,111,.6); transform:translateZ(45px); transition:.4s; }
+  .card:hover .hangul{ transform:translateZ(60px) scale(1.06); text-shadow:0 0 46px rgba(255,80,150,.95); }
+
+  /* ---- K-DRAMA PINK THEME (scoped to the two K-drama sections) ---- */
+  #kdrama, #kdrama-top10{ --acc:#ff4d8d; --acc2:#ffb0d0; --acc3:#ff2d6f; --neon:#ff6aa0; }
+  #kdrama .card:hover{ box-shadow:0 34px 80px rgba(0,0,0,.7), 0 0 55px rgba(255,45,111,.35), inset 0 0 0 1px rgba(255,120,170,.45); }
+  #kdrama .g1{ background:linear-gradient(135deg,#4a1836,#06040e); } #kdrama .g2{ background:linear-gradient(135deg,#521f3d,#06040e); }
+  #kdrama .g3{ background:linear-gradient(135deg,#521830,#06040e); } #kdrama .g4{ background:linear-gradient(135deg,#3d1a2e,#06040e); }
+  #kdrama .g5{ background:linear-gradient(135deg,#522542,#06040e); } #kdrama .g6{ background:linear-gradient(135deg,#521825,#06040e); }
+  /* small ranking tile with a Hangul character (stands in for a poster) */
+  .kpic{ width:60px; height:80px; border-radius:10px; flex-shrink:0; border:1px solid var(--line); display:grid; place-items:center;
+    font-family:'Noto Sans KR',sans-serif; font-weight:900; font-size:1.7rem; color:#fff;
+    background:linear-gradient(150deg,#4a1836,#06040e); text-shadow:0 0 14px rgba(255,45,111,.75); }
 
   @media(prefers-reduced-motion:reduce){
     .petal,.btn:not(.ghost),.title em,.spotlight .box::after{ animation:none !important; }
@@ -694,6 +705,35 @@
           <div class="body"><div class="tag">Revenge · Thriller</div><h3>The Glory</h3><p>A woman spends years meticulously plotting vengeance against the bullies who scarred her.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:94%"></i></div><span>94</span></div></div></article>
         <article class="card reveal d2"><div class="thumb"><div class="g g5"></div><span class="rank">NEW</span><span class="fav">♥</span><span class="hangul">선</span></div>
           <div class="body"><div class="tag">Romance · Comedy</div><h3>Business Proposal</h3><p>A blind date goes sideways when she realizes her match is secretly her own CEO.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:92%"></i></div><span>92</span></div></div></article>
+        <article class="card reveal"><div class="thumb"><div class="g g1"></div><span class="rank">TOP 8</span><span class="fav">♥</span><span class="hangul">이</span></div>
+          <div class="body"><div class="tag">Drama · Revenge</div><h3>Itaewon Class</h3><p>An ex-convict builds a street-bar empire to take down the food conglomerate that ruined his family.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:91%"></i></div><span>91</span></div></div></article>
+        <article class="card reveal d1"><div class="thumb"><div class="g g4"></div><span class="rank">CLASSIC</span><span class="fav">♥</span><span class="hangul">응</span></div>
+          <div class="body"><div class="tag">Slice of Life · Family</div><h3>Reply 1988</h3><p>Five families in a 1988 Seoul alley share laughter, first love, and unforgettable nostalgia.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:93%"></i></div><span>93</span></div></div></article>
+        <article class="card reveal d2"><div class="thumb"><div class="g g2"></div><span class="rank">NEW</span><span class="fav">♥</span><span class="hangul">스</span></div>
+          <div class="body"><div class="tag">Horror · Thriller</div><h3>Sweet Home</h3><p>Trapped residents fight to survive as the humans around them twist into monstrous nightmares.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:92%"></i></div><span>92</span></div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- K-DRAMA TOP 10 (separate section) -->
+  <section id="kdrama-top10">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Ranked · Korea</div>
+        <h2 class="title">Top 10 <em>K-Dramas</em></h2>
+        <p class="lead">This week's most-watched Korean dramas, ranked by millions of fans across the realm.</p>
+      </div>
+      <div class="top10">
+        <div class="trank reveal"><div class="num">1</div><span class="kpic">오</span><div class="meta"><h4>Squid Game</h4><span class="st">★ 9.8</span> <span>· Thriller</span></div></div>
+        <div class="trank reveal d1"><div class="num">2</div><span class="kpic">사</span><div class="meta"><h4>Crash Landing on You</h4><span class="st">★ 9.7</span> <span>· Romance</span></div></div>
+        <div class="trank reveal"><div class="num">3</div><span class="kpic">도</span><div class="meta"><h4>Goblin</h4><span class="st">★ 9.7</span> <span>· Fantasy</span></div></div>
+        <div class="trank reveal d1"><div class="num">4</div><span class="kpic">응</span><div class="meta"><h4>Reply 1988</h4><span class="st">★ 9.6</span> <span>· Family</span></div></div>
+        <div class="trank reveal"><div class="num">5</div><span class="kpic">글</span><div class="meta"><h4>The Glory</h4><span class="st">★ 9.6</span> <span>· Thriller</span></div></div>
+        <div class="trank reveal d1"><div class="num">6</div><span class="kpic">빈</span><div class="meta"><h4>Vincenzo</h4><span class="st">★ 9.5</span> <span>· Crime</span></div></div>
+        <div class="trank reveal"><div class="num">7</div><span class="kpic">이</span><div class="meta"><h4>Itaewon Class</h4><span class="st">★ 9.4</span> <span>· Drama</span></div></div>
+        <div class="trank reveal d1"><div class="num">8</div><span class="kpic">선</span><div class="meta"><h4>Business Proposal</h4><span class="st">★ 9.3</span> <span>· Romance</span></div></div>
+        <div class="trank reveal"><div class="num">9</div><span class="kpic">스</span><div class="meta"><h4>Sweet Home</h4><span class="st">★ 9.3</span> <span>· Horror</span></div></div>
+        <div class="trank reveal d1"><div class="num">10</div><span class="kpic">갯</span><div class="meta"><h4>Hometown Cha-Cha-Cha</h4><span class="st">★ 9.2</span> <span>· Romance</span></div></div>
       </div>
     </div>
   </section>
@@ -957,7 +997,7 @@
   document.querySelectorAll('[data-trailer]').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); const [t,d] = b.dataset.trailer.split('|'); openModal(t,d); }));
   document.querySelectorAll('#chars .card, #kdrama .card').forEach(c => c.addEventListener('click', () => openModal(c.querySelector('h3').textContent, c.querySelector('p').textContent)));
   document.querySelectorAll('#eps .ep').forEach(ep => ep.addEventListener('click', () => openModal(ep.querySelector('h4').textContent, ep.querySelector('span').textContent)));
-  document.querySelectorAll('#top10 .trank').forEach(t => t.addEventListener('click', () => openModal(t.querySelector('h4').textContent, 'Trending in the realm right now.')));
+  document.querySelectorAll('#top10 .trank, #kdrama-top10 .trank').forEach(t => t.addEventListener('click', () => openModal(t.querySelector('h4').textContent, 'Trending in the realm right now.')));
   // ===== anime slider (Power) =====
   (function(){
     const track = document.getElementById('aTrack'); if(!track) return;
