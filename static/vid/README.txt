@@ -19,7 +19,7 @@ Tips
 - Format: MP4 (H.264 video + AAC audio). This plays everywhere.
 - The clip loops and is muted, so ~10-30 seconds is plenty.
 - Keep each file small (ideally under ~5 MB) so the site stays fast.
-- No file for a card? It automatically falls back to hero.mp4 — nothing breaks.
+- No file for a card? The card uses a cinematic animated-image hover instead — nothing breaks.
 - Only use footage you have the right to use.
 
 Quick resize/compress with ffmpeg (optional):
