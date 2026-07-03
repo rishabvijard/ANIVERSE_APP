@@ -443,6 +443,10 @@
 
   /* ---- K-DRAMA PINK THEME (scoped to the two K-drama sections) ---- */
   #kdrama, #kdrama-top10{ --acc:#ff4d8d; --acc2:#ffb0d0; --acc3:#ff2d6f; --neon:#ff6aa0; }
+  /* logo tints pink while viewing the K-drama sections */
+  .logo, .logo span{ transition:color .45s ease, text-shadow .45s ease; }
+  body.kdrama-active .logo{ color:#ff4d8d; }
+  body.kdrama-active .logo span{ color:#ff4d8d; text-shadow:0 0 24px rgba(255,77,141,.8); }
   #kdrama .card:hover{ box-shadow:0 34px 80px rgba(0,0,0,.7), 0 0 55px rgba(255,45,111,.35), inset 0 0 0 1px rgba(255,120,170,.45); }
   #kdrama .g1{ background:linear-gradient(135deg,#4a1836,#06040e); } #kdrama .g2{ background:linear-gradient(135deg,#521f3d,#06040e); }
   #kdrama .g3{ background:linear-gradient(135deg,#521830,#06040e); } #kdrama .g4{ background:linear-gradient(135deg,#3d1a2e,#06040e); }
@@ -1019,6 +1023,18 @@
       p.style.animationDelay = (-Math.random()*dur)+'s';
       layer.appendChild(p);
     }
+  })();
+
+  // ===== tint the logo pink while viewing the K-drama sections =====
+  (function(){
+    const kd = document.querySelectorAll('#kdrama, #kdrama-top10');
+    if(!kd.length) return;
+    const active = new Set();
+    const io = new IntersectionObserver(es => {
+      es.forEach(en => { if(en.isIntersecting) active.add(en.target); else active.delete(en.target); });
+      document.body.classList.toggle('kdrama-active', active.size > 0);
+    }, { threshold:0, rootMargin:'-45% 0px -45% 0px' });
+    kd.forEach(s => io.observe(s));
   })();
 
   // ===== 🎬 cinematic hover previews on character cards =====
