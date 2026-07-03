@@ -417,6 +417,14 @@
     z-index:3; pointer-events:none; opacity:.75; animation:ringMove 8s linear infinite; }
   @keyframes ringMove{ to{ background-position:300% center; } }
 
+  /* hover video previews on character cards */
+  .card .thumb .cardvid{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 22%; z-index:1; opacity:0; transition:opacity .45s ease; }
+  .card.playing .thumb .cardvid{ opacity:1; }
+  .card.playing .thumb .poster{ opacity:0; }
+  .card .thumb .livedot{ position:absolute; bottom:12px; left:12px; z-index:4; display:none; align-items:center; gap:6px; font-size:.62rem; letter-spacing:1.5px; font-weight:700; color:#fff; padding:4px 10px; border-radius:50px; background:rgba(210,77,255,.35); border:1px solid rgba(255,255,255,.25); backdrop-filter:blur(4px); transform:translateZ(35px); }
+  .card.playing .thumb .livedot{ display:inline-flex; }
+  .card .thumb .livedot::before{ content:""; width:6px; height:6px; border-radius:50%; background:#ff5a7a; box-shadow:0 0 8px #ff5a7a; animation:pulse 1.4s infinite; }
+
   @media(prefers-reduced-motion:reduce){
     .petal,.btn:not(.ghost),.title em,.spotlight .box::after{ animation:none !important; }
     .fx-sakura{ display:none; }
@@ -938,6 +946,45 @@
       p.style.animationDelay = (-Math.random()*dur)+'s';
       layer.appendChild(p);
     }
+  })();
+
+  // ===== 🎬 hover video previews on character cards =====
+  (function(){
+    const cards = document.querySelectorAll('#chars .card');
+    if(!cards.length) return;
+    const heroEl = document.querySelector('.hero-media source');
+    const heroSrc = heroEl ? heroEl.src : '';
+    cards.forEach(card => {
+      const thumb = card.querySelector('.thumb');
+      const poster = card.querySelector('img.poster');
+      if(!thumb || !poster) return;
+      // each card's own clip: static/img/charN.jpg  ->  static/vid/charN.mp4
+      const ownSrc = poster.src.replace('/img/','/vid/').replace(/\.(jpg|jpeg|png)$/i,'.mp4');
+      let vid = null, triedFallback = false;
+      function build(){
+        vid = document.createElement('video');
+        vid.className = 'cardvid';
+        vid.muted = true; vid.loop = true; vid.playsInline = true; vid.preload = 'none';
+        vid.setAttribute('muted',''); vid.setAttribute('playsinline','');
+        vid.src = ownSrc;
+        vid.addEventListener('error', () => {
+          if(!triedFallback && heroSrc){ triedFallback = true; vid.src = heroSrc; vid.load(); vid.play().catch(()=>{}); }
+        });
+        thumb.insertBefore(vid, poster.nextSibling);
+        const badge = document.createElement('span'); badge.className = 'livedot'; badge.textContent = 'PREVIEW';
+        thumb.appendChild(badge);
+      }
+      card.addEventListener('mouseenter', () => {
+        if(matchMedia('(hover: none)').matches) return;   // skip on touch devices
+        if(!vid) build();
+        card.classList.add('playing');
+        vid.play().catch(()=>{});
+      });
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('playing');
+        if(vid){ vid.pause(); try{ vid.currentTime = 0; }catch(e){} }
+      });
+    });
   })();
 </script>
 </body>
