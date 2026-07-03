@@ -6,7 +6,7 @@
 <title>ANIVERSE — Enter the Anime Realm</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+KR:wght@700;900&display=swap" rel="stylesheet">
 <style>
   /* ============ RESET & TOKENS ============ */
   *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
@@ -437,6 +437,10 @@
   .card.playing .thumb .livedot{ display:inline-flex; }
   .card .thumb .livedot::before{ content:""; width:6px; height:6px; border-radius:50%; background:#ff5a7a; box-shadow:0 0 8px #ff5a7a; animation:pulse 1.4s infinite; }
 
+  /* Hangul character for K-drama cards (mirrors .kanji, blue glow) */
+  .card .hangul{ position:relative; z-index:3; font-family:'Noto Sans KR',sans-serif; font-size:5rem; font-weight:900; color:rgba(255,255,255,.95); text-shadow:0 0 36px rgba(90,210,255,.65); transform:translateZ(45px); transition:.4s; }
+  .card:hover .hangul{ transform:translateZ(60px) scale(1.06); text-shadow:0 0 46px rgba(90,210,255,.9); }
+
   @media(prefers-reduced-motion:reduce){
     .petal,.btn:not(.ghost),.title em,.spotlight .box::after{ animation:none !important; }
     .fx-sakura{ display:none; }
@@ -485,6 +489,7 @@
         <div class="links" id="links">
           <a href="#power">Power</a>
           <a href="#chars">Characters</a>
+          <a href="#kdrama">K-Dramas</a>
           <a href="#top10">Top 10</a>
           <a href="#eps">Episodes</a>
           <a href="#plans">Plans</a>
@@ -664,6 +669,31 @@
           <div class="body"><div class="tag">Hero</div><h3>One For All</h3><p>The inheritor of a sacred power, training to become the symbol of peace.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:90%"></i></div><span>90</span></div></div></article>
         <article class="card reveal d2" data-tilt><div class="thumb"><div class="g g6"></div><img class="poster" src="{{ url_for('static', filename='img/char9.jpg') }}" alt="" onerror="this.remove()" /><span class="rank">S+ TIER</span><span class="fav">♥</span><span class="kanji">鋼</span></div>
           <div class="body"><div class="tag">Alchemist</div><h3>Fullmetal</h3><p>A prodigy chasing the Philosopher's Stone to restore what was lost.</p><div class="powerbar"><span>PWR</span><div class="pb"><i style="width:96%"></i></div><span>96</span></div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRENDING K-DRAMAS -->
+  <section id="kdrama">
+    <div class="wrap">
+      <div class="head center reveal">
+        <div class="eyebrow">Now Trending · Korea</div>
+        <h2 class="title">Trending <em>K-Dramas</em></h2>
+        <p class="lead">Beyond anime — the most-binged Korean dramas in the realm right now. Tap the heart to save one for tonight.</p>
+      </div>
+      <div class="grid">
+        <article class="card reveal"><div class="thumb"><div class="g g3"></div><span class="rank">#1 HOT</span><span class="fav">♥</span><span class="hangul">오</span></div>
+          <div class="body"><div class="tag">Thriller · Survival</div><h3>Squid Game</h3><p>456 desperate players risk their lives in deadly children's games for a life-changing fortune.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:99%"></i></div><span>99</span></div></div></article>
+        <article class="card reveal d1"><div class="thumb"><div class="g g2"></div><span class="rank">TOP 3</span><span class="fav">♥</span><span class="hangul">사</span></div>
+          <div class="body"><div class="tag">Romance · Drama</div><h3>Crash Landing on You</h3><p>A chaebol heiress paraglides across the border — into North Korea and a forbidden love.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:97%"></i></div><span>97</span></div></div></article>
+        <article class="card reveal d2"><div class="thumb"><div class="g g1"></div><span class="rank">TRENDING</span><span class="fav">♥</span><span class="hangul">도</span></div>
+          <div class="body"><div class="tag">Fantasy · Romance</div><h3>Goblin</h3><p>An immortal guardian searches for the one bride who can finally end his cursed eternity.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:96%"></i></div><span>96</span></div></div></article>
+        <article class="card reveal"><div class="thumb"><div class="g g4"></div><span class="rank">HOT</span><span class="fav">♥</span><span class="hangul">빈</span></div>
+          <div class="body"><div class="tag">Crime · Dark Comedy</div><h3>Vincenzo</h3><p>A mafia consigliere returns to Korea to fight corruption by his own ruthless rules.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:95%"></i></div><span>95</span></div></div></article>
+        <article class="card reveal d1"><div class="thumb"><div class="g g6"></div><span class="rank">TOP 5</span><span class="fav">♥</span><span class="hangul">글</span></div>
+          <div class="body"><div class="tag">Revenge · Thriller</div><h3>The Glory</h3><p>A woman spends years meticulously plotting vengeance against the bullies who scarred her.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:94%"></i></div><span>94</span></div></div></article>
+        <article class="card reveal d2"><div class="thumb"><div class="g g5"></div><span class="rank">NEW</span><span class="fav">♥</span><span class="hangul">선</span></div>
+          <div class="body"><div class="tag">Romance · Comedy</div><h3>Business Proposal</h3><p>A blind date goes sideways when she realizes her match is secretly her own CEO.</p><div class="powerbar"><span>BUZZ</span><div class="pb"><i style="width:92%"></i></div><span>92</span></div></div></article>
       </div>
     </div>
   </section>
@@ -925,7 +955,7 @@
   modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
   addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
   document.querySelectorAll('[data-trailer]').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); const [t,d] = b.dataset.trailer.split('|'); openModal(t,d); }));
-  document.querySelectorAll('#chars .card').forEach(c => c.addEventListener('click', () => openModal(c.querySelector('h3').textContent, c.querySelector('p').textContent)));
+  document.querySelectorAll('#chars .card, #kdrama .card').forEach(c => c.addEventListener('click', () => openModal(c.querySelector('h3').textContent, c.querySelector('p').textContent)));
   document.querySelectorAll('#eps .ep').forEach(ep => ep.addEventListener('click', () => openModal(ep.querySelector('h4').textContent, ep.querySelector('span').textContent)));
   document.querySelectorAll('#top10 .trank').forEach(t => t.addEventListener('click', () => openModal(t.querySelector('h4').textContent, 'Trending in the realm right now.')));
   // ===== anime slider (Power) =====
